@@ -1,25 +1,31 @@
-import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:flutter/material.dart';
+import 'package:cc206_budget_buddy/features/log_in.dart';
+import 'package:cc206_budget_buddy/features/homepage.dart';
 
-void main(){
-  runApp(const MyApp());
+void main() {
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget{
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
 
-  //This widget is the root of your application.
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      title: 'Sample Project',
-      theme:ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:const SignUpPage(),
+      //home: LogInPage(),
+
+      initialRoute: '/login',
+      routes: {
+        '/login': (BuildContext ctx ) => LogInPage(),
+        '/simplehomepage' : (BuildContext ctx) => HomePage()
+      },
     );
   }
 }

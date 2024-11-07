@@ -1,5 +1,7 @@
-import 'package:cc206_budget_buddy/features/sign_up_page.dart';
+import 'package:cc206_budget_buddy/features/log_in.dart';
 import 'package:flutter/material.dart';
+
+import 'Log_in.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -35,7 +37,7 @@ class Homepage extends StatelessWidget {
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> const SignUpPage())); // Navigate back to the previous screen
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> LogInPage()));
               },
               child: const Text("Back to Signup"),
             ),
