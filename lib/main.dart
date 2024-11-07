@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:cc206_budget_buddy/features/log_in.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/signup',
       routes: {
         '/login': (BuildContext ctx ) => LogInPage(),
-        '/simplehomepage' : (BuildContext ctx) => Homepage(),
-        '/signup' : (BuildContext ctx) => SignUpPage(),
+        '/simplehomepage' : (BuildContext ctx) => const Homepage(),
+        '/signup' : (BuildContext ctx) => const SignUpPage(),
       },
     );
   }
