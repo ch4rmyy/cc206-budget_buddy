@@ -69,7 +69,7 @@ class LogInPage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      child: Image.asset('assets/image/P.png',
+                      child: Image.asset('assets/images/pig5.png',
                           width: 150, height: 150),
                     ),
                     SizedBox(height: 10),
