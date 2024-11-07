@@ -1,4 +1,4 @@
-import 'package:cc206_budget_buddy/features/sign_up_page.dart';
+import 'package:cc206_budget_buddy/features/Log_in.dart';
 import 'package:flutter/material.dart';
 
 class Homepage extends StatelessWidget {
