@@ -1,4 +1,5 @@
 import 'package:cc206_budget_buddy/features/homepage.dart';
+import 'package:cc206_budget_buddy/features/log_in.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -248,7 +249,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                           recognizer: TapGestureRecognizer() //property sang textSpan for linking sa LogIn
                             ..onTap = () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LogInPage ())); //Change sa LogInPage ang Homepage
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LogInPage ())); //Change sa LogInPage ang Homepage
                             }
                           
                         )

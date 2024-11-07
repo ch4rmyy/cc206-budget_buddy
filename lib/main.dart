@@ -1,6 +1,7 @@
+import 'package:cc206_budget_buddy/features/sign_up_page.dart';
+import 'package:cc206_budget_buddy/features/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:cc206_budget_buddy/features/log_in.dart';
-import 'package:cc206_budget_buddy/features/homepage.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,10 +22,11 @@ class MyApp extends StatelessWidget {
       ),
       //home: LogInPage(),
 
-      initialRoute: '/login',
+      initialRoute: '/signup',
       routes: {
         '/login': (BuildContext ctx ) => LogInPage(),
-        '/simplehomepage' : (BuildContext ctx) => HomePage()
+        '/simplehomepage' : (BuildContext ctx) => Homepage(),
+        '/signup' : (BuildContext ctx) => SignUpPage(),
       },
     );
   }

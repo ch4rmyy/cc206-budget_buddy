@@ -24,13 +24,52 @@ class LogInPage extends StatelessWidget {
     }
     return null;
   }
-  
 
+  Future<void> _popup(BuildContext context) async {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        contentPadding: EdgeInsets.zero,
+        content: Container(
+          width: 75,
+          height: 300,
+          decoration: BoxDecoration(
+            color: const Color.fromRGBO(254, 250, 224, 100),
+            border: Border.all(
+              color: const Color.fromRGBO(96, 108, 56, 100),
+              width: 5,
+            ),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                  Icon(Icons.check_circle, color: Color.fromARGB(255, 32, 216, 38), size: 150),
+                  SizedBox(height: 20),
+                  Text("Log In Successfully", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,)),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+
+  // Delay for 3 seconds, then close the dialog and navigate
+  await Future.delayed(const Duration(seconds: 2), () {
+    Navigator.pop(context); // Close the dialog
+    Navigator.pushNamed(context, '/simplehomepage'); // Navigate to the homepage
+  }); 
+}
   LogInPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( //reason for back button 
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -110,54 +149,11 @@ class LogInPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 30),
+
                     ElevatedButton(
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
-                          // Perform login if validation is successful
-                           showDialog(
-                            
-                            context: context,
-                            //barrierDismissible: false,
-                            builder: (context) {
-                              // Schedule a delayed dismissal of the alert dialog after 3 seconds
-                              // Future.delayed(const Duration(seconds: 3), () {
-                                    //Navigator.pop(context); // Close the dialog
-                                    // Navigator.pushNamed(context, '/simplehomepage');
-                              // });
-                              // Return the AlertDialog widget
-                              return AlertDialog(
-                                contentPadding: EdgeInsets.zero, 
-                                content: Container(
-                                  width: 75,
-                                  height: 300,
-                                  decoration: BoxDecoration(
-                                    color:  const Color.fromRGBO(254, 250, 224, 100),
-                                    border: Border.all(
-                                      color: const Color.fromRGBO(96, 108, 56, 100),
-                                      width: 5,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        const Icon(Icons.check_circle, color: Color.fromARGB(255, 32, 216, 38), size: 150),
-                                        const SizedBox(height: 20),
-                                        const Text("Log In Successfully", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,)),
-                                        ElevatedButton(
-                                          child: const Text("OK"),
-                                          onPressed: () => Navigator.pushNamed(context, '/simplehomepage'),
-                                        ),
-                                      ],
-                                      
-                                    )
-                                  ),
-                                ),
-                              );
-                            },
-                          );
+                          _popup(context);                          
                         }
                       },
                       child: const Padding(
@@ -167,6 +163,7 @@ class LogInPage extends StatelessWidget {
                             style: TextStyle(color: Colors.black)),
                       ),
                     ),
+
                     const SizedBox(height: 20),
                     RichText(
                       text: TextSpan(
