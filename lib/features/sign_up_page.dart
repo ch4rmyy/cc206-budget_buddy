@@ -248,7 +248,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                           recognizer: TapGestureRecognizer() //property sang textSpan for linking sa LogIn
                             ..onTap = () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Homepage())); //Change sa LogInPage ang Homepage
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LogInPage ())); //Change sa LogInPage ang Homepage
                             }
                           
                         )
