@@ -62,7 +62,7 @@ class LogInPage extends StatelessWidget {
   // Delay for 3 seconds, then close the dialog and navigate
   await Future.delayed(const Duration(seconds: 2), () {
     Navigator.pop(context); // Close the dialog
-    Navigator.pushNamed(context, '/simplehomepage'); // Navigate to the homepage
+    Navigator.pushNamed(context, '/nav'); // Navigate to the homepage
   }); 
 }
   LogInPage({super.key});
