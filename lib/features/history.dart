@@ -42,9 +42,11 @@ class _HistoryState extends State<History> {
           return ListTile(
             dense: true,
             title: Text(_items[index]),
+
           );
         },
       ),
     );
   }
+
 }

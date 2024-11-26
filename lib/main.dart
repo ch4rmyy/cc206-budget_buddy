@@ -1,5 +1,6 @@
 import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
+import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:cc206_budget_buddy/features/log_in.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/login': (BuildContext ctx ) => LogInPage(),
         '/simplehomepage' : (BuildContext ctx) => const Homepage(),
         '/signup' : (BuildContext ctx) => const SignUpPage(),
+        '/nav': (BuildContext ctx ) =>  MainNavigator(),
       },
     );
   }
