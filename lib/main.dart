@@ -3,6 +3,7 @@ import 'package:cc206_budget_buddy/features/homepage.dart';
 import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:cc206_budget_buddy/features/log_in.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 //para sa database 
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        textTheme: GoogleFonts.poppinsTextTheme(),
       ),
       //home: LogInPage(),
 

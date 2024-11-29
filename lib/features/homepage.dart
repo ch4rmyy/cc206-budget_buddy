@@ -1,7 +1,9 @@
 import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
-// import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 // import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
+//import 'package:cc206_budget_buddy/features/log_in.dart';
+//import 'package:cc206_budget_buddy/features/calendar.dart';
+import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
 class Homepage extends StatefulWidget {
@@ -20,7 +22,7 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Homepage"),
-        backgroundColor: Colors.green,
+        backgroundColor: const Color.fromRGBO(40, 54, 24, 1),
       ),
       drawer: Maindrawer(),
       body: Center(
@@ -34,10 +36,7 @@ class _HomepageState extends State<Homepage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Change the greetingText variable when the button is pressed
-                setState(() {
-                  
-                });
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUpPage()));
               },
               child: const Text('Click Me'),
             ),
