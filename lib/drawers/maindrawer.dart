@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Maindrawer extends StatelessWidget {
+  const Maindrawer({super.key});
+
  @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -10,11 +12,11 @@ class Maindrawer extends StatelessWidget {
         children: [
           
           Container(
-            margin: EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 20),
             width: double.infinity,
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             color: Theme.of(context).primaryColor,
-            child: Center(
+            child: const Center(
               child: Text("BudgetBuddy", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500,)
               ),
             ),
@@ -24,8 +26,8 @@ class Maindrawer extends StatelessWidget {
              child: Column(
                 children: [
                   ListTile(
-                    leading: Icon(Icons.filter),
-                    title: Text("Preferences",  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                    leading: const Icon(Icons.filter),
+                    title: const Text("Preferences",  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
                     onTap: () => Navigator.pushNamed(context, '/signup'),
                   )
                 ],

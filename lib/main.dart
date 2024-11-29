@@ -11,9 +11,10 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 
 void main() {
-  sqfliteFfiInit();  // Initialize sqflite FFI.
-  databaseFactory = databaseFactoryFfi;  // Set the global database factory.
+   // Set the global database factory.
   runApp(const MyApp());
+  sqfliteFfiInit();  // Initialize sqflite FFI.
+  databaseFactory = databaseFactoryFfi; 
 }
 
 class MyApp extends StatelessWidget {

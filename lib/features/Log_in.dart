@@ -113,13 +113,13 @@ class LogInPage extends StatelessWidget {
                       child: Image.asset('assets/images/pig5.png',
                           width: 150, height: 150),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Container(
                       width: 250,
                       height: 50,
-                      padding: EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
-                        color: Color.fromRGBO(238, 235, 212, 100),
+                        color: const Color.fromRGBO(238, 235, 212, 100),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: TextFormField(

@@ -1,6 +1,6 @@
 import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
-import 'package:cc206_budget_buddy/features/sign_up_page.dart';
-import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
+// import 'package:cc206_budget_buddy/features/sign_up_page.dart';
+// import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/material.dart';
 
@@ -27,11 +27,11 @@ class _HomepageState extends State<Homepage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'greetingText',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Change the greetingText variable when the button is pressed
@@ -39,7 +39,7 @@ class _HomepageState extends State<Homepage> {
                   
                 });
               },
-              child: Text('Click Me'),
+              child: const Text('Click Me'),
             ),
           ],
         ),

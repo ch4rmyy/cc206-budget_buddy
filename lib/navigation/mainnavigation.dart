@@ -1,6 +1,6 @@
 //import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
-import 'package:cc206_budget_buddy/features/records.dart';
+//import 'package:cc206_budget_buddy/features/records.dart';
 import 'package:flutter/material.dart';
 
 class MainNavigator extends StatefulWidget {
