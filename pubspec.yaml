@@ -13,6 +13,7 @@ dependencies:
 
   cupertino_icons: ^1.0.8
   sqflite: ^2.4.1
+  very_good_infinite_list: ^0.9.0
 
 dev_dependencies:
   flutter_test:
