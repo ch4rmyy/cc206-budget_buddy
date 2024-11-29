@@ -1,10 +1,12 @@
 import 'package:cc206_budget_buddy/features/homepage.dart';
 import 'package:cc206_budget_buddy/features/log_in.dart';
+import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
+
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -15,8 +17,11 @@ class _SignUpPageState extends State<SignUpPage> {
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  List<Map<String, String>> budgetBuddyUsers = [];
+  //List<Map<String, String>> budgetBuddyUsers = [];
   final bool _obscureText = true;
+
+  final DatabaseService _databaseService = DatabaseService.instance;
+
 
   String? _validateEmail(String? value) {
     const pattern = r'^[^@]+@[^@]+\.[^@]+$';
@@ -45,64 +50,75 @@ class _SignUpPageState extends State<SignUpPage> {
     }
     return null;
   }
-
-  void _submitForm() {
-    if (_fKey.currentState!.validate()) {
-      setState(() {
-        budgetBuddyUsers.add({
-          'username': _usernameController.text,
-          'email': _emailController.text,
-          'password': _passwordController.text,
-        });
-      });
+  
+void _submitForm() async {
+  if (_fKey.currentState!.validate()) {
+    // Save data to SQLite
+    try {
+      await _databaseService.addUser(
+        _emailController.text,
+        _usernameController.text,
+        _passwordController.text,
+      );
 
       _usernameController.clear();
       _emailController.clear();
       _passwordController.clear();
 
-      showDialog(context: context, builder: (BuildContext context){
-        return AlertDialog(
-          contentPadding: EdgeInsets.zero,
-          content: Container(
-            width: 75,
-            height: 300,
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(254, 250, 224, 100),
-              border: Border.all(
-                color: const Color.fromRGBO(96, 108, 56, 100),
-                width: 5,
-              ),
-              borderRadius: BorderRadius.circular(20)
-            ),
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Sign up successful!', 
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.zero,
+            content: Container(
+              width: 75,
+              height: 300,
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(254, 250, 224, 100),
+                border: Border.all(
+                  color: const Color.fromRGBO(96, 108, 56, 100),
+                  width: 5,
                 ),
-                Icon(Icons.check_circle, color: Color.fromARGB(255, 32, 216, 38), size: 150,),
-                SizedBox(height: 20,)
-              ],
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Sign up successful!',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Icon(
+                    Icons.check_circle,
+                    color: Color.fromARGB(255, 32, 216, 38),
+                    size: 150,
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ),
             ),
-          ), 
-        );
-
-      },
+          );
+        },
       );
-      //Delay for 2 sec tas next page TRY LNG
-        Future.delayed(const Duration(seconds: 2), (){
-          if (!mounted) return; //check ya if ara pa si signUpPage before magNavigate sa new page 
-          Navigator.of(context).pop();
-          Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context)=> const Homepage()),
-            );
-        });
-      // ScaffoldMessenger.of(context)
-      //     .showSnackBar(const SnackBar(content: Text('Sign Up successful!'),
-      //     backgroundColor: Color.fromARGB(255, 65, 155, 68)));
-    }
 
-  } // Submit form function
+      // Navigate to the Homepage after delay
+      Future.delayed(const Duration(seconds: 2), () {
+        if (!mounted) return;
+        Navigator.of(context).pop();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Homepage()),
+        );
+      });
+    } catch (e) {
+      // Handle database error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error saving data: $e')),
+      );
+    }
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {

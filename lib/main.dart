@@ -4,7 +4,15 @@ import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:cc206_budget_buddy/features/log_in.dart';
 
+//para sa database 
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+//import 'package:path_provider/path_provider.dart';
+
+
+
 void main() {
+  sqfliteFfiInit();  // Initialize sqflite FFI.
+  databaseFactory = databaseFactoryFfi;  // Set the global database factory.
   runApp(const MyApp());
 }
 
