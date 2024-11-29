@@ -1,4 +1,4 @@
-import 'package:cc206_budget_buddy/features/history.dart';
+//import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
 import 'package:cc206_budget_buddy/features/records.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +14,8 @@ class _MainNavigatorState extends State<MainNavigator> {
   // List of pages for navigation
   final List<Widget> pages = [
     const Homepage(),
-    RecordPage(),
-    HistoryPage(),
+    //RecordPage(),
+    //HistoryPage(),
   ];
 
   @override
