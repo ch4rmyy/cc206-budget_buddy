@@ -1,3 +1,4 @@
+import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 //import 'package:login/features/homepage.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 class LogInPage extends StatelessWidget {
   // Define the formKey
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final DatabaseService _databaseService = DatabaseService.instance;
 
   // Email validation function
   String? validateEmail(String? email) {
