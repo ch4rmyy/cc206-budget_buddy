@@ -1,7 +1,9 @@
 import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
 import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
-// import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
+//import 'package:cc206_budget_buddy/features/log_in.dart';
+//import 'package:cc206_budget_buddy/features/calendar.dart';
+import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
 class Homepage extends StatefulWidget {
@@ -191,7 +193,7 @@ class _HomepageState extends State<Homepage> {
               const SizedBox(height: 50),
         
               Container(
-                padding: EdgeInsets.only(left: 20),
+                padding: const EdgeInsets.only(left: 20),
                 alignment: Alignment.centerLeft,
                 //color: Colors.deepPurple,
                 child: const Text("Categories", style: TextStyle(fontSize: 28,fontWeight: FontWeight.bold))),
@@ -202,7 +204,7 @@ class _HomepageState extends State<Homepage> {
                 height: 210,
                 width: double.infinity,
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 10),
                   child: Column(
                     children: [
                       Container(
@@ -226,7 +228,7 @@ class _HomepageState extends State<Homepage> {
                               color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
                               spreadRadius: 2, // How much the shadow spreads
                               blurRadius: 8, // Softness of the shadow
-                              offset: Offset(0, 4), // Horizontal and vertical offset
+                              offset: const Offset(0, 4), // Horizontal and vertical offset
                             ),
                           ], // Default color for the lower part // Default color for the lower part
                         ),
@@ -259,7 +261,7 @@ class _HomepageState extends State<Homepage> {
                               color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
                               spreadRadius: 2, // How much the shadow spreads
                               blurRadius: 8, // Softness of the shadow
-                              offset: Offset(0, 4), // Horizontal and vertical offset
+                              offset: const Offset(0, 4), // Horizontal and vertical offset
                             ),
                           ], // Default color for the lower part // Default color for the lower part
                         ),
@@ -294,7 +296,7 @@ class _HomepageState extends State<Homepage> {
                               color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
                               spreadRadius: 2, // How much the shadow spreads
                               blurRadius: 8, // Softness of the shadow
-                              offset: Offset(0, 4), // Horizontal and vertical offset
+                              offset: const Offset(0, 4), // Horizontal and vertical offset
                             ),
                           ], // Default color for the lower part // Default color for the lower part
                         ),
@@ -332,7 +334,7 @@ class _HomepageState extends State<Homepage> {
                               color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
                               spreadRadius: 2, // How much the shadow spreads
                               blurRadius: 8, // Softness of the shadow
-                              offset: Offset(0, 4), // Horizontal and vertical offset
+                              offset: const Offset(0, 4), // Horizontal and vertical offset
                             ),
                           ], // Default color for the lower part // Default color for the lower part
                         ),
@@ -369,7 +371,7 @@ class _HomepageState extends State<Homepage> {
                               color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
                               spreadRadius: 2, // How much the shadow spreads
                               blurRadius: 8, // Softness of the shadow
-                              offset: Offset(0, 4), // Horizontal and vertical offset
+                              offset: const Offset(0, 4), // Horizontal and vertical offset
                             ),
                           ], // Default color for the lower part // Default color for the lower part
                         ),
@@ -409,7 +411,7 @@ class _HomepageState extends State<Homepage> {
                               color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
                               spreadRadius: 2, // How much the shadow spreads
                               blurRadius: 8, // Softness of the shadow
-                              offset: Offset(0, 4), // Horizontal and vertical offset
+                              offset: const Offset(0, 4), // Horizontal and vertical offset
                             ),
                           ], // Default color for the lower part // Default color for the lower part
                         ),
@@ -418,11 +420,7 @@ class _HomepageState extends State<Homepage> {
                           title: Text("Transportation"),
                           trailing: Text("P300"),
                         ),
-                      ),
-                      
-                      
-                      
-                      
+                      ),  
                     ],
                   ),
                 ),
