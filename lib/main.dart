@@ -1,3 +1,4 @@
+import 'package:cc206_budget_buddy/drawers/editProfile.dart';
 import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
@@ -7,13 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:cc206_budget_buddy/features/log_in.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-//para sa database 
+//para sa database
 //import 'package:path_provider/path_provider.dart';
 
-
-
 void main() {
-   // Set the global database factory.
+  // Set the global database factory.
   runApp(const MyApp());
 }
 
@@ -27,19 +26,21 @@ class MyApp extends StatelessWidget {
       title: 'Budget Buddy',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 163, 227, 90)), 
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 163, 227, 90)),
         useMaterial3: true,
         textTheme: GoogleFonts.poppinsTextTheme(),
       ),
 
       initialRoute: '/login',
       routes: {
-        '/login': (BuildContext ctx ) => LogInPage(),
-        '/homepage' : (BuildContext ctx) => const Homepage(),
-        '/signup' : (BuildContext ctx) => const SignUpPage(),
-        '/nav': (BuildContext ctx ) =>  MainNavigator(),
-        '/rec':(BuildContext ctx ) => const Records(),
-        '/history' : (BuildContext ctx) => History(),
+        '/login': (BuildContext ctx) => LogInPage(),
+        '/homepage': (BuildContext ctx) => const Homepage(),
+        '/signup': (BuildContext ctx) => const SignUpPage(),
+        '/nav': (BuildContext ctx) => MainNavigator(),
+        '/rec': (BuildContext ctx) => const Records(),
+        '/history': (BuildContext ctx) => History(),
+        '/idprofile': (BuildContext ctx) => ProfileEditorScreen(),
       },
     );
   }
