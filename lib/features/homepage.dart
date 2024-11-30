@@ -25,25 +25,15 @@ class _HomepageState extends State<Homepage> {
         backgroundColor: const Color.fromRGBO(40, 54, 24, 1),
       ),
       drawer: Maindrawer(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'greetingText',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUpPage()));
-              },
-              child: const Text('Click Me'),
-            ),
-          ],
-        ),
-      ),
-      // bottomNavigationBar: MainNavigator(),
+          ),
+        )
+      )
     );
   }
 }

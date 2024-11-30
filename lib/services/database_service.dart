@@ -2,7 +2,6 @@
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite/sqlite_api.dart';
 
 
 class DatabaseService {
@@ -14,6 +13,19 @@ class DatabaseService {
   final String _userEmailColumnName = "email";
   final String _userUsernameColumnName = "username";
   final String _userPassWordColumnName = "password";
+
+
+  //to delete
+  Future<void> printAllUsers() async {
+  final db = await database;
+  final List<Map<String, dynamic>> users = await db.query(_userTableName);
+
+  print('Users in the database:');
+  for (var user in users) {
+    print('ID: ${user[_userIdColumnName]}, Email: ${user[_userEmailColumnName]}, Username: ${user[_userUsernameColumnName]}, Password: ${user[_userPassWordColumnName]}');
+  }
+}
+
   
 
   DatabaseService._constructor();
@@ -41,7 +53,7 @@ class DatabaseService {
           $_userIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT,
           $_userEmailColumnName TEXT NOT NULL,
           $_userPassWordColumnName TEXT NOT NULL,
-          $_userUsernameColumnName TEXT NOT NULL,
+          $_userUsernameColumnName TEXT NOT NULL
          
         )
         ''');
@@ -55,6 +67,11 @@ class DatabaseService {
   }
 
   Future<void> addUser(String email, String username, String password) async {
+
+    //to be delete
+    print('Inserting user: email=$email, username=$username, password=$password');
+
+
     final db = await database;
     await db.insert(
       _userTableName,
@@ -65,4 +82,33 @@ class DatabaseService {
       },
     );
   }
+
+  //gina check kung may ara...para sa SIGNUP
+  Future<bool> checkUserExists(String username, String email) async {
+  final db = await database; // Your SQLite database instance
+  final result = await db.query(
+    _userTableName, // Replace with your table name
+    where: 'username = ? OR email = ?',
+    whereArgs: [username, email],
+  );
+
+  return result.isNotEmpty; // Return true if a user exists, otherwise false
+}
+
+//gina check kung may ara...para sa LOGIN
+Future<Map<String, dynamic>?> getUserEmailAndPassword(String email, String password) async {
+  final db = await database;
+  final result = await db.query(
+    _userTableName,
+    where: 'email = ? AND password = ?',
+    whereArgs: [email, password],
+  );
+
+  if (result.isNotEmpty) {
+    return result.first; // Return the first matching user
+  }
+  return null; // No match found
+}
+
+
 }

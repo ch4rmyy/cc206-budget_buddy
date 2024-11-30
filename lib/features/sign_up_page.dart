@@ -54,256 +54,289 @@ class _SignUpPageState extends State<SignUpPage> {
 void _submitForm() async {
   if (_fKey.currentState!.validate()) {
     // Save data to SQLite
-    try {
-      await _databaseService.addUser(
-        _emailController.text,
-        _usernameController.text,
-        _passwordController.text,
-      );
+    bool isDuplicate = await _databaseService.checkUserExists(_usernameController.text, _emailController.text);
 
-      _usernameController.clear();
-      _emailController.clear();
-      _passwordController.clear();
-
+    if(isDuplicate){
       showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            contentPadding: EdgeInsets.zero,
-            content: Container(
-              width: 75,
-              height: 300,
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(254, 250, 224, 100),
-                border: Border.all(
-                  color: const Color.fromRGBO(96, 108, 56, 100),
-                  width: 5,
-                ),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Sign up successful!',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text("Try Again", textAlign: TextAlign.center,),
+                  content: const Text(
+                    "The email or username is already in use. Please try again with different data.",
                   ),
-                  Icon(
-                    Icons.check_circle,
-                    color: Color.fromARGB(255, 32, 216, 38),
-                    size: 150,
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-
-      // Navigate to the Homepage after delay
-      Future.delayed(const Duration(seconds: 2), () {
-        if (!mounted) return;
-        Navigator.of(context).pop();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Homepage()),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text("OK"),
+                    ),
+                  ],
+                );
+              },
+            );
+    }else{
+      try {
+        await _databaseService.addUser(
+          _emailController.text.trim(),
+          _usernameController.text.trim(),
+          _passwordController.text.trim(),
         );
-      });
-    } catch (e) {
-      // Handle database error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error saving data: $e')),
-      );
+  
+        _usernameController.clear();
+        _emailController.clear();
+        _passwordController.clear();
+  
+        //print sa console
+        await _databaseService.printAllUsers();
+  
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              contentPadding: EdgeInsets.zero,
+              content: Container(
+                width: 75,
+                height: 300,
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(254, 250, 224, 100),
+                  border: Border.all(
+                    color: const Color.fromRGBO(96, 108, 56, 100),
+                    width: 5,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Sign up successful!',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Icon(
+                      Icons.check_circle,
+                      color: Color.fromARGB(255, 32, 216, 38),
+                      size: 150,
+                    ),
+                    SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+  
+        // Navigate to the Login after delay
+        Future.delayed(const Duration(seconds: 2), () {
+          if (!mounted) return;
+          Navigator.of(context).pop();
+          Navigator.pushNamed(context, '/login');
+        });
+      } catch (e) {
+        // Handle database error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error saving data: $e')),
+        );
+      }
     }
   }
 }
 
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: SafeArea(
+      child: SingleChildScrollView( // This makes the screen scrollable when the keyboard is visible
+        child: Padding(
+           padding: const EdgeInsets.all(16.0),  // Add some padding for better spacing
+          child: Form(
+            key: _fKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 50), 
+                const Text(
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-      child: Form(
-        key: _fKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Budget Buddy",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 15),
-            const Text(
-              "Create your account",
-              style: TextStyle(fontSize: 15),
-            ),
-            Image.asset(
-              'assets/images/pig5.png',
-              width: 150,
-              height: 150,
-            ),
-            Center(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  "Budget Buddy",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 15),
+                const Text(
+                  "Create your account",
+                  style: TextStyle(fontSize: 15),
+                ),
+                Image.asset(
+                  'assets/images/pig5.png',
+                  width: 150,
+                  height: 150,
+                ),
+                Center(
+                  child: Column(
                     children: [
-                      Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.brown[800],
-                            size: 25,
-                          )),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        height: 50,
-                        width: 250,
-                        child: TextFormField(
-                          controller: _usernameController,
-                          validator: _validateUsername,
-                          cursorHeight: 15,
-                          decoration: InputDecoration(
-                              filled: true,
-                              fillColor: const Color.fromRGBO(238, 235, 212, 1),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide.none,
-                              ),
-                              labelText: 'Username',
-                              labelStyle: const TextStyle(
-                                fontSize: 12,
-                              )),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Icon(
-                            Icons.email,
-                            color: Colors.brown[800],
-                            size: 25,
-                          )),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        height: 50,
-                        width: 250,
-                        child: TextFormField(
-                          controller: _emailController,
-                          validator: _validateEmail,
-                          cursorHeight: 15,
-                          decoration: InputDecoration(
-                              filled: true,
-                              fillColor: const Color.fromRGBO(238, 235, 212, 1),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide.none,
-                              ),
-                              labelText: 'Email',
-                              labelStyle: const TextStyle(
-                                fontSize: 12,
-                              )),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Icon(
-                            Icons.lock,
-                            color: Colors.brown[800],
-                            size: 25,
-                          )),
-                      Container(
-                        margin: const EdgeInsets.only(top: 10),
-                        height: 50,
-                        width: 250,
-                        child: TextFormField(
-                          obscureText: _obscureText,
-                          controller: _passwordController,
-                          validator: _validatePassword,
-                          cursorHeight: 15,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: const Color.fromRGBO(238, 235, 212, 1),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            labelText: 'Password',
-                            labelStyle: const TextStyle(
-                              fontSize: 12,
-                            ),
-                            suffixIcon: Icon(
-                              Icons.visibility_off,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Icon(
+                              Icons.person,
                               color: Colors.brown[800],
-                              size: 20,
+                              size: 25,
                             ),
                           ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            height: 50,
+                            width: 250,
+                            child: TextFormField(
+                              controller: _usernameController,
+                              validator: _validateUsername,
+                              cursorHeight: 15,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: const Color.fromRGBO(238, 235, 212, 1),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                labelText: 'Username',
+                                labelStyle: const TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Icon(
+                              Icons.email,
+                              color: Colors.brown[800],
+                              size: 25,
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            height: 50,
+                            width: 250,
+                            child: TextFormField(
+                              controller: _emailController,
+                              validator: _validateEmail,
+                              cursorHeight: 15,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: const Color.fromRGBO(238, 235, 212, 1),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                labelText: 'Email',
+                                labelStyle: const TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Icon(
+                              Icons.lock,
+                              color: Colors.brown[800],
+                              size: 25,
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 10),
+                            height: 50,
+                            width: 250,
+                            child: TextFormField(
+                              obscureText: _obscureText,
+                              controller: _passwordController,
+                              validator: _validatePassword,
+                              cursorHeight: 15,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: const Color.fromRGBO(238, 235, 212, 1),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                labelText: 'Password',
+                                labelStyle: const TextStyle(
+                                  fontSize: 12,
+                                ),
+                                suffixIcon: Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.brown[800],
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                      RichText(
+                        text: TextSpan(
+                          text: 'Already have an account? Log in ',
+                          style: const TextStyle(color: Colors.black, fontSize: 12),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'here',
+                              style: const TextStyle(color: Colors.blue, fontSize: 12),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => LogInPage()),
+                                  );
+                                },
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(35, 22, 0, 0),
+                        child: ElevatedButton(
+                          onPressed: _submitForm,
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            backgroundColor: const Color.fromRGBO(238, 235, 212, 1),
+                            textStyle: const TextStyle(
+                              fontSize: 13,
+                            ),
+                            minimumSize: const Size(150, 35),
+                            elevation: 4,
+                          ).copyWith(
+                            shape: WidgetStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                          child: const Text('Sign up', style: TextStyle(fontWeight: FontWeight.w600)),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
-
-                  RichText( //Widget para magDisplay text nga may lainlain design gamit ang TextSpan class 
-                    text: TextSpan( //proprty sang text
-                      text: 'Already have an account? Log in ',
-                      style: const TextStyle(color: Colors.black, fontSize: 12),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'here',
-                          style: const TextStyle(color: Colors.blue, fontSize: 12),
-
-                          recognizer: TapGestureRecognizer() //property sang textSpan for linking sa LogIn
-                            ..onTap = () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LogInPage ())); //Change sa LogInPage ang Homepage
-                            }
-                          
-                        )
-                      ]
-                    ),
-                  ),
-
-
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(35, 22, 0, 0),
-                    child: ElevatedButton(
-                        onPressed: _submitForm, 
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          backgroundColor:
-                              const Color.fromRGBO(238, 235, 212, 1),
-                          textStyle: const TextStyle(
-                            fontSize: 13,
-                          ),
-                          minimumSize: const Size(150, 35),
-                          elevation: 4,
-                        ).copyWith(
-                          shape: WidgetStatePropertyAll(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        child: const Text('Sign up', style: TextStyle(fontWeight: FontWeight.w600),)),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
-    ));
-  }
+    ),
+  );
+}
+
 
   @override
   void dispose() {
