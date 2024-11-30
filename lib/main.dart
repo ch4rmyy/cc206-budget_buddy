@@ -1,5 +1,7 @@
+import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
+import 'package:cc206_budget_buddy/input/records.dart';
 import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:flutter/material.dart';
 import 'package:cc206_budget_buddy/features/log_in.dart';
@@ -25,18 +27,20 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 163, 227, 90)), 
         useMaterial3: true,
         textTheme: GoogleFonts.poppinsTextTheme(),
       ),
       //home: LogInPage(),
 
-      initialRoute: '/signup',
+      initialRoute: '/rec',
       routes: {
         '/login': (BuildContext ctx ) => LogInPage(),
-        '/simplehomepage' : (BuildContext ctx) => const Homepage(),
+        '/homepage' : (BuildContext ctx) => const Homepage(),
         '/signup' : (BuildContext ctx) => const SignUpPage(),
         '/nav': (BuildContext ctx ) =>  MainNavigator(),
+        '/rec':(BuildContext ctx ) => const Records(),
+        '/history' : (BuildContext ctx) => History(),
       },
     );
   }
