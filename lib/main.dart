@@ -1,3 +1,4 @@
+import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
 import 'package:cc206_budget_buddy/input/records.dart';
@@ -35,13 +36,14 @@ class MyApp extends StatelessWidget {
       ),
       //home: LogInPage(),
 
-      initialRoute: '/rec',
+      initialRoute: '/history',
       routes: {
         '/login': (BuildContext ctx ) => LogInPage(),
         '/homepage' : (BuildContext ctx) => const Homepage(),
         '/signup' : (BuildContext ctx) => const SignUpPage(),
         '/nav': (BuildContext ctx ) =>  MainNavigator(),
         '/rec':(BuildContext ctx ) => const Records(),
+        '/history' : (BuildContext ctx) => History(),
       },
     );
   }
