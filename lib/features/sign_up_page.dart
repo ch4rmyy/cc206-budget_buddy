@@ -153,7 +153,7 @@ Widget build(BuildContext context) {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 50), 
+                const SizedBox(height: 150), 
                 const Text(
 
                   "Budget Buddy",
