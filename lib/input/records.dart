@@ -46,9 +46,7 @@ class _RecordsState extends State<Records> {
           iconTheme: const IconThemeData(color: Color(0xFFFEFAE0)),
           title: const Text("Budget Log"),
           titleTextStyle: const TextStyle(
-            color: Color.fromRGBO(254, 250, 224, 1),
-            fontSize: 30,
-          ),
+            color: Color.fromRGBO(254, 250, 224, 1),fontSize: 30,),
           backgroundColor: const Color.fromRGBO(40, 54, 24, 1),
           toolbarHeight: 160,
           flexibleSpace: Container(
@@ -58,9 +56,7 @@ class _RecordsState extends State<Records> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Row(children: [
-                      Text("Hello <user>",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
+                      Text("Hello <user>",style: TextStyle(fontSize: 18, color: Colors.white),),
                       Spacer(),
                       CircleAvatar(
                         radius: 25,
@@ -85,8 +81,7 @@ class _RecordsState extends State<Records> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Category",
+                  const Text("Category",
                     textAlign: TextAlign.right,
                     style: TextStyle(color: Color.fromARGB(255, 111, 111, 111),fontSize: 20,),
                   ),
