@@ -1,4 +1,5 @@
 import 'package:cc206_budget_buddy/drawers/editProfile.dart';
+import 'package:cc206_budget_buddy/features/calendar.dart';
 import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(),
       ),
 
-      initialRoute: '/signup',
+      initialRoute: '/calendar',
       routes: {
         '/login': (BuildContext ctx) => const LogInPage(),
         '/homepage': (BuildContext ctx) => const Homepage(),
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
         '/history': (BuildContext ctx) => History(),
         '/idprofile': (BuildContext ctx) => ProfileEditorScreen(),
         '/record': (BuildContext ctx) => const Records(),
-        
+        '/calendar': (BuildContext ctx) => Calendar(),
 
       },
     );
