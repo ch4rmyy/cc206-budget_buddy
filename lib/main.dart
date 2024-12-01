@@ -1,6 +1,8 @@
+import 'package:cc206_budget_buddy/drawers/aboutus.dart';
 import 'package:cc206_budget_buddy/drawers/editProfile.dart';
 import 'package:cc206_budget_buddy/drawers/manageAccount.dart';
 import 'package:cc206_budget_buddy/features/calendar.dart';
+import 'package:cc206_budget_buddy/drawers/ratings.dart';
 import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
@@ -50,7 +52,8 @@ class MyApp extends StatelessWidget {
         '/record': (BuildContext ctx) => const Records(),
         '/calendar': (BuildContext ctx) => Calendar(),
         '/manageAcc': (BuildContext ctx) => ManageAccountPage(),
-
+        '/aboutUs': (BuildContext ctx) => const AboutUsScreen(),
+        'ratings': (BuildContext ctx) => const RatingScreen()
       },
     );
   }
