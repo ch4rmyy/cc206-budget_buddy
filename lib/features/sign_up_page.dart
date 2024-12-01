@@ -1,4 +1,3 @@
-import 'package:cc206_budget_buddy/features/homepage.dart';
 import 'package:cc206_budget_buddy/features/log_in.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/gestures.dart';
@@ -153,7 +152,7 @@ Widget build(BuildContext context) {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 150), 
+                const SizedBox(height: 80),
                 const Text(
 
                   "Budget Buddy",

@@ -118,7 +118,7 @@ class _LogInPageState extends State<LogInPage> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 150),
+                    const SizedBox(height: 100),
                     const Text(
                       "BudgetBuddy",
                       style: TextStyle(
