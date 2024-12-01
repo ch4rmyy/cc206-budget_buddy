@@ -6,7 +6,6 @@ class Maindrawer extends StatelessWidget {
  @override
   Widget build(BuildContext context) {
     return Drawer(
-      //backgroundColor: Color.fromRGBO(0, 0, 0, 0.612),
       
       child: Column(
         children: [

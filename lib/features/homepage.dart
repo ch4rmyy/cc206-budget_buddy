@@ -1,4 +1,5 @@
 import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
+import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 // import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
 //import 'package:cc206_budget_buddy/features/log_in.dart';
@@ -20,20 +21,26 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Homepage"),
-        backgroundColor: const Color.fromRGBO(40, 54, 24, 1),
-      ),
-      drawer: Maindrawer(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              
-            ),
-          ),
-        )
-      )
-    );
+        appBar: AppBar(
+          title: const Text("Homepage"),
+          backgroundColor: const Color.fromRGBO(40, 54, 24, 1),
+        ),
+        drawer: Maindrawer(),
+        body: SafeArea(
+          child: SingleChildScrollView(
+              child: Column(
+            children: [
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignUpPage()));
+                },
+                child: const Text('Click Me'),
+              ),
+            ],
+          )),
+          //bottomNavigationBar: MainNavigator(),
+        ));
   }
 }

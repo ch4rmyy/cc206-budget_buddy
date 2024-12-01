@@ -1,5 +1,7 @@
+import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
 import 'package:cc206_budget_buddy/input/tabs/tab1.dart';
 import 'package:cc206_budget_buddy/input/tabs/tab2.dart';
+import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:flutter/material.dart';
 
 class Records extends StatefulWidget {
@@ -41,13 +43,14 @@ class _RecordsState extends State<Records> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          iconTheme: const IconThemeData(color: Color(0xFFFEFAE0)),
           title: const Text("Budget Log"),
           titleTextStyle: const TextStyle(
             color: Color.fromRGBO(254, 250, 224, 1),
             fontSize: 30,
           ),
           backgroundColor: const Color.fromRGBO(40, 54, 24, 1),
-          toolbarHeight: 150,
+          toolbarHeight: 160,
           flexibleSpace: Container(
               //hello user
               padding: const EdgeInsets.fromLTRB(12, 5, 12, 60),
@@ -56,7 +59,7 @@ class _RecordsState extends State<Records> {
                   children: [
                     Row(children: [
                       Text("Hello <user>",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
                       Spacer(),
                       CircleAvatar(
@@ -75,6 +78,7 @@ class _RecordsState extends State<Records> {
             unselectedLabelColor: Color.fromRGBO(174, 167, 121, 1),
           ),
         ),
+        drawer: const Maindrawer(),
         body: TabBarView(children: [
           Container(
               padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
@@ -302,6 +306,7 @@ class _RecordsState extends State<Records> {
               )),
 
         ]),
+        //bottomNavigationBar: MainNavigator(),
       ),
     );
   }

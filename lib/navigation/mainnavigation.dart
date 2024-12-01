@@ -1,7 +1,7 @@
 import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/calendar.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
-//import 'package:cc206_budget_buddy/features/records.dart';
+//import 'package:cc206_budget_buddy/input/records.dart';
 import 'package:flutter/material.dart';
 
 class MainNavigator extends StatefulWidget {
@@ -24,8 +24,8 @@ class _MainNavigatorState extends State<MainNavigator> {
     return Scaffold(
       body: pages[currentpage], // Display the selected page
       bottomNavigationBar: NavigationBar(
-        backgroundColor: Colors.green,
-        indicatorColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color(0xFF283618),
+        indicatorColor: const Color(0xFFFEFAE0),
         selectedIndex: currentpage, // Highlight the selected item
         onDestinationSelected: (int index) {
           setState(() {
@@ -34,7 +34,7 @@ class _MainNavigatorState extends State<MainNavigator> {
         },
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: "Home"),
-          NavigationDestination(icon: Icon(Icons.pie_chart), label: "Calendar"),
+          NavigationDestination(icon: Icon(Icons.calendar_month), label: "Calendar"),
           NavigationDestination(icon: Icon(Icons.history), label: "History"),
         ],
       ),

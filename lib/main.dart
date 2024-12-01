@@ -24,14 +24,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Budget Buddy',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 163, 227, 90)), 
         useMaterial3: true,
         textTheme: GoogleFonts.poppinsTextTheme(),
       ),
-      //home: LogInPage(),
 
       initialRoute: '/login',
       routes: {
