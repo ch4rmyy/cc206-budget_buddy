@@ -17,71 +17,6 @@ class _HomepageState extends State<Homepage> {
   final DatabaseService _databaseService = DatabaseService.instance;
   
 
-  void showOptionDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    barrierDismissible: true, // Allows dismissing by tapping outside
-    builder: (BuildContext context) {
-      return AlertDialog(
-        actions: [
-          Center(  // Center the Row widget
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,  // Center the buttons horizontally
-                // Center the buttons vertically
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  width: 120,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.green, // Background color for the first button
-                    borderRadius: BorderRadius.circular(15), // Set rounded corners
-                  ),             
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
-                      print("Option 1 selected");
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(Icons.arrow_downward, color: Colors.white,),
-                        SizedBox(width: 5,),
-                         Text("Expenses", style: TextStyle(color: Colors.white)),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10), // Space between the buttons
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  width: 120,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.blue, // Background color for the second button
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
-                      print("Option 2 selected");
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(Icons.arrow_upward, color: Colors.white,),
-                        SizedBox(width: 5,),
-                        Text("Budget", style: TextStyle(color: Colors.white)),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      );
-    },
-  );
-}
 
 
 
@@ -500,7 +435,7 @@ class _HomepageState extends State<Homepage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-           showOptionDialog(context);
+          Navigator.pushNamed(context, '/record');
         },
         backgroundColor: Colors.green,
           shape: const CircleBorder(),

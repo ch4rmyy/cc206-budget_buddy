@@ -37,10 +37,13 @@ class MyApp extends StatelessWidget {
         '/login': (BuildContext ctx) => LogInPage(),
         '/homepage': (BuildContext ctx) => const Homepage(),
         '/signup': (BuildContext ctx) => const SignUpPage(),
-        '/nav': (BuildContext ctx) => MainNavigator(),
+        '/nav': (BuildContext ctx) => const MainNavigator(),
         '/rec': (BuildContext ctx) => const Records(),
         '/history': (BuildContext ctx) => History(),
         '/idprofile': (BuildContext ctx) => ProfileEditorScreen(),
+        '/record': (BuildContext ctx) => const Records(),
+        
+
       },
     );
   }
