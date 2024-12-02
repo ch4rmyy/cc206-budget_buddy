@@ -46,6 +46,12 @@ class _LogInPageState extends State<LogInPage> {
           _emailController.clear();
           _passwordController.clear();
           await _popup();
+
+          Navigator.pushReplacementNamed(
+          context,
+          '/nav',
+          arguments: {'email': email, 'password': password,}, // Pass the username to the homepage
+        );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Error: No user found")),
@@ -101,8 +107,7 @@ class _LogInPageState extends State<LogInPage> {
 
     // Ensure the widget is still mounted before proceeding
     if (mounted) {
-      Navigator.of(context).pop(); // Close the dialog
-      Navigator.pushNamed(context, '/nav'); // Navigate to the homepage
+      Navigator.of(context).pop(); // Close the dialog      
     }
   }
 

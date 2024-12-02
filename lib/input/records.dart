@@ -2,6 +2,7 @@ import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
 import 'package:cc206_budget_buddy/input/tabs/tab1.dart';
 import 'package:cc206_budget_buddy/input/tabs/tab2.dart';
 import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
+import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/material.dart';
 
 class Records extends StatefulWidget {
@@ -20,22 +21,145 @@ class _RecordsState extends State<Records> {
     "Boarding Fees",
     "Others"
   ];
-  String? selectedCategory; // Default selected option
-  final TextEditingController _amountController =
-      TextEditingController(); //Amount part
 
-  // Function to handle button press
-  void _submitData() {
-    final enteredAmount = _amountController.text;
-    if (enteredAmount.isEmpty) {
-      // Handle the case where the user hasn't entered anything
+   final DatabaseService _databaseService = DatabaseService.instance;
+
+   @override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  
+  // Retrieve the username passed from the homepage
+  final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+  final username = args['username']!;  // Get the username
+
+  // Fetch the userId based on the username
+  _fetchUserIdByUsername(username);
+}
+
+int? _userId;
+String? selectedCategory; // Default selected option
+final TextEditingController _budgetController = TextEditingController(); //Amount part
+final TextEditingController _expenseController = TextEditingController();
+
+
+// Function to fetch userId by username
+Future<void> _fetchUserIdByUsername(String username) async {
+  try {
+    // Fetch the user data based on username
+    final user = await _databaseService.getUserIdByUsername(username);
+    if (user != null) {
+      setState(() {
+        _userId = user['id'];
+      });
+    // Assuming 'id' is the userId field
+      // Now we have the userId, you can call addBudget function // Pass userId to addBudget
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Error: User not found")),
+      );
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Error fetching user")),
+    );
+    print("Error fetching user: $e");
+  }
+}
+
+Future<void> _addBudget() async {
+  if (_userId == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Error: User not loaded yet")),
+    );
+    return;
+  }
+
+  final double bamount = double.parse(_budgetController.text.trim());
+
+  if (bamount > 0) {
+    try {
+      await _databaseService.addBudget(_userId!, bamount);
+      final double totalBudget = await _databaseService.getTotalBudget(_userId!);  // Assuming this method gets the total budget for the user
+    await _databaseService.updateTotalBudget(_userId!, totalBudget);  // Update the total budget in the budget table
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Budget added successfully")),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Error adding budget")),
+      );
+      print("Error adding budget: $e");
+    }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Please enter a valid amount")),
+    );
+  }
+}
+
+Future<void> _submitDataExpense() async {
+  if (_userId == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Error: User not loaded yet")),
+    );
+    return;
+  }
+
+  if (selectedCategory == null || selectedCategory!.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Please select a category")),
+    );
+    return;
+  }
+
+  double? mount; // Nullable until parsed
+  try {
+    mount = double.parse(_expenseController.text.trim());
+    if (mount <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Amount must be greater than zero")),
+      );
       return;
     }
-    // Print the entered data to the console (you can replace this with any logic)
-    print("Entered Amount: $enteredAmount");
-    // Clear the text field after submitting
-    _amountController.clear();
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Please enter a valid amount")),
+    );
+    return;
   }
+
+  try {
+    // Call the database service to add the expense
+    await _databaseService.addExpense(_userId!, mount, selectedCategory!);
+    final double totalExpense = await _databaseService.getTotalExpenses(_userId!);  // Assuming this method gets the total expense for the user
+    await _databaseService.updateTotalExpense(_userId!, totalExpense);  // Update the total expense in the user table
+    await _databaseService.printAllExpenses();
+
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Expense added successfully")),
+    );
+
+    // Clear inputs after successful submission
+    _expenseController.clear();
+    setState(() {
+      selectedCategory = null; // Reset category
+    });
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Error adding expense")),
+    );
+    print("Error adding expense: $e");
+  }
+}
+
+
+
+
+  
+  
+  
 
   @override
   Widget build(BuildContext context) {
@@ -76,231 +200,195 @@ class _RecordsState extends State<Records> {
         ),
         //drawer: const Maindrawer(),
         body: TabBarView(children: [
-          Container(
-              padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text("Category",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(color: Color.fromARGB(255, 111, 111, 111),fontSize: 20,),
-                  ),
-                  SizedBox(
-                    height: 70,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(20), // Rounded corners
-                      ),
-                      elevation: 3, // Shadow effect
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        child: Row(
-                          children: [
-                            // Leading Circle Icon
-                            const CircleAvatar(radius: 20,
-                              backgroundColor: Color.fromRGBO(96, 108, 56, 1), // Green background
-                              child: Icon(
-                                Icons.category,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(width: 16), // Space between icon and text
-                            // Dropdown for Category
-                            Expanded(
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  value: selectedCategory,
-                                  hint: const Text("Select Category",
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      selectedCategory = newValue;
-                                    });
-                                  },
-                                  items: categories.map<DropdownMenuItem<String>>((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+          SingleChildScrollView(
+            child: Container(
+                padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text("Category",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(color: Color.fromARGB(255, 111, 111, 111),fontSize: 20,),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text("Amount",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(color: Color.fromARGB(255, 111, 111, 111),fontSize: 20,),
-                  ),
-                  SizedBox(
-                    height: 70,
-                    child: Card(
+                    SizedBox(
+                      height: 70,
+                      child: Card(
                         shape: RoundedRectangleBorder(
-                          borderRadius:BorderRadius.circular(20), // Rounded corners
+                          borderRadius:
+                              BorderRadius.circular(20), // Rounded corners
                         ),
                         elevation: 3, // Shadow effect
                         child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                            child: Row(children: [
-                              // Empty Space (leading)
-                              const SizedBox(width: 16),
-                              // Amount TextField
-                              Expanded(
-                                  child: TextField(
-                                controller: _amountController,
-                                keyboardType:
-                                    TextInputType.number, // Numeric input
-                                decoration: const InputDecoration(
-                                  hintText: "Enter Amount",
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey), // Placeholder text
-                                  border: InputBorder
-                                      .none, // No border for the text field
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          child: Row(
+                            children: [
+                              // Leading Circle Icon
+                              const CircleAvatar(radius: 20,
+                                backgroundColor: Color.fromRGBO(96, 108, 56, 1), // Green background
+                                child: Icon(
+                                  Icons.category,
+                                  color: Colors.white,
                                 ),
-                                style: const TextStyle(fontSize: 16,color: Colors.black,),
-                              ))
-                            ]))),
-                  ),
-                  const SizedBox(height: 100,),
-                  ElevatedButton(
-                    onPressed:
-                        _submitData, // Trigger the function on button press
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF283618), // Button color
-                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20), // Rounded corners for the button
-                      ),
-                    ),
-                    child: const Text("Add",
-                      style: TextStyle(fontSize: 15, color: Color(0xFFFEFAE0)),
-                    ),
-                  ),
-
-                ],
-              )),
-
-
-              Container(
-              padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Category",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(color: Color.fromARGB(255, 111, 111, 111),fontSize: 20,),
-                  ),
-                  SizedBox(
-                    height: 70,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(20), // Rounded corners
-                      ),
-                      elevation: 3, // Shadow effect
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        child: Row(
-                          children: [
-                            // Leading Circle Icon
-                            const CircleAvatar(radius: 20,
-                              backgroundColor: Color.fromRGBO(96, 108, 56, 1), // Green background
-                              child: Icon(
-                                Icons.category,
-                                color: Colors.white,
                               ),
-                            ),
-                            const SizedBox(width: 16), // Space between icon and text
-                            // Dropdown for Category
-                            Expanded(
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  value: selectedCategory,
-                                  hint: const Text("Select Category",
-                                    style: TextStyle(color: Colors.grey),
+                              const SizedBox(width: 16), // Space between icon and text
+                              // Dropdown for Category
+                              Expanded(
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    isExpanded: true,
+                                    value: selectedCategory,
+                                    hint: const Text("Select Category",
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        selectedCategory = newValue;
+                                      });
+                                    },
+                                    items: categories.map<DropdownMenuItem<String>>((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
                                   ),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      selectedCategory = newValue;
-                                    });
-                                  },
-                                  items: categories.map<DropdownMenuItem<String>>((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text("Amount",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(color: Color.fromARGB(255, 111, 111, 111),fontSize: 20,),
-                  ),
-                  SizedBox(
-                    height: 70,
-                    child: Card(
+                    const SizedBox(height: 20),
+                    const Text("Amount",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(color: Color.fromARGB(255, 111, 111, 111),fontSize: 20,),
+                    ),
+                    SizedBox(
+                      height: 70,
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius:BorderRadius.circular(20), // Rounded corners
+                          ),
+                          elevation: 3, // Shadow effect
+                          child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              child: Row(children: [
+                                // Empty Space (leading)
+                                const SizedBox(width: 16),
+                                // Amount TextField
+                                Expanded(
+                                    child: TextField(
+                                  controller: _expenseController,
+                                  keyboardType:
+                                      TextInputType.number, // Numeric input
+                                  decoration: const InputDecoration(
+                                    hintText: "Enter Amount",
+                                    hintStyle: TextStyle(
+                                        color: Colors.grey), // Placeholder text
+                                    border: InputBorder
+                                        .none, // No border for the text field
+                                  ),
+                                  style: const TextStyle(fontSize: 16,color: Colors.black,),
+                                ))
+                              ]))),
+                    ),
+                    const SizedBox(height: 100,),
+                    ElevatedButton(
+                      onPressed:
+                          _submitDataExpense, // Trigger the function on button press
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF283618), // Button color
+                        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                         shape: RoundedRectangleBorder(
-                          borderRadius:BorderRadius.circular(20), // Rounded corners
+                          borderRadius: BorderRadius.circular(20), // Rounded corners for the button
                         ),
-                        elevation: 3, // Shadow effect
-                        child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                            child: Row(children: [
-                              // Empty Space (leading)
-                              const SizedBox(width: 16),
-                              // Amount TextField
-                              Expanded(
-                                  child: TextField(
-                                controller: _amountController,
-                                keyboardType:
-                                    TextInputType.number, // Numeric input
-                                decoration: const InputDecoration(
-                                  hintText: "Enter Amount",
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey), // Placeholder text
-                                  border: InputBorder
-                                      .none, // No border for the text field
-                                ),
-                                style: const TextStyle(fontSize: 16,color: Colors.black,),
-                              ))
-                            ]))),
-                  ),
-                  const SizedBox(height: 100,),
-                  ElevatedButton(
-                    onPressed:
-                        _submitData, // Trigger the function on button press
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF283618), // Button color
-                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20), // Rounded corners for the button
+                      ),
+                      child: const Text("Add",
+                        style: TextStyle(fontSize: 15, color: Color(0xFFFEFAE0)),
                       ),
                     ),
-                    child: const Text("Add",
-                      style: TextStyle(fontSize: 15, color: Color(0xFFFEFAE0)),
+            
+                  ],
+                )
+              ),
+          ),
+
+
+              SingleChildScrollView(
+                child: Container(
+                padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    //const SizedBox(height: 20),
+                    const Text("Amount",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(color: Color.fromARGB(255, 111, 111, 111),fontSize: 20,),
                     ),
-                  ),
-                  
+                    SizedBox(
+                      height: 70,
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius:BorderRadius.circular(20), // Rounded corners
+                          ),
+                          elevation: 3, // Shadow effect
+                          child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              child: Row(children: [
+                                // Empty Space (leading)
+                                const SizedBox(width: 16),
+                                // Amount TextField
+                                Expanded(
+                                    child: TextField(
+                                  controller: _budgetController,
+                                  keyboardType:
+                                      TextInputType.number, // Numeric input
+                                  decoration: const InputDecoration(
+                                    hintText: "Enter Amount",
+                                    hintStyle: TextStyle(
+                                        color: Colors.grey), // Placeholder text
+                                    border: InputBorder
+                                        .none, // No border for the text field
+                                  ),
+                                  style: const TextStyle(fontSize: 16,color: Colors.black,),
+                                ))
+                              ]))),
+                    ),
+                    const SizedBox(height: 100,),
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (_budgetController.text.isNotEmpty) {
+                          try {
+                            await _addBudget(); // Directly call _addBudget() since it now internally uses _userId
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Error: Could not add budget")),
+                            );
+                            print("Error in button press: $e");
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Please enter a valid amount")),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF283618),
+                        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: const Text(
+                        "Add",
+                        style: TextStyle(fontSize: 15, color: Color(0xFFFEFAE0)),
+                      ),
+                    ),
 
-                ],
-              )),
-
+                  ],
+                )),
+              ),
         ]),
         //bottomNavigationBar: MainNavigator(),
       ),

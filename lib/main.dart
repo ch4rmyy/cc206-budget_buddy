@@ -5,6 +5,7 @@ import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
 import 'package:cc206_budget_buddy/input/records.dart';
 import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
+import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cc206_budget_buddy/features/log_in.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,10 +13,13 @@ import 'package:google_fonts/google_fonts.dart';
 //para sa database
 //import 'package:path_provider/path_provider.dart';
 
-void main() {
+Future<void> main() async {
   // Set the global database factory.
   runApp(const MyApp());
-}
+  final dbService = DatabaseService.instance;
+  await dbService.checkTableInfo();
+  await dbService.printAllUsers();
+  }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

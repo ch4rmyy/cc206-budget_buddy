@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
 import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
@@ -9,6 +11,8 @@ import 'package:flutter/material.dart';
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
+  
+
   @override
   _HomepageState createState() => _HomepageState();
 }
@@ -17,7 +21,78 @@ class _HomepageState extends State<Homepage> {
   // Declare a variable here to manage the state
 
   final DatabaseService _databaseService = DatabaseService.instance;
-  
+
+  String _username = "Guest";
+  bool _isLoading = true;
+
+  double totalExpense = 0.0;
+  double totalBudget = 0.0;
+  double remainingMoney = 0.0;
+  double calculateRemainingMoney(double budget, double expense) {
+  return budget - expense;
+}
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    _fetchUsername(args['email']!, args['password']!);
+  }
+
+  @override
+void initState() {
+  super.initState();
+}
+
+// Fetch total expense and total budget for the user based on username
+
+
+  Future<void> _fetchUsername(String email, String password) async {
+    try {
+      final user = await _databaseService.getUserEmailAndPassword(email, password);
+      if (user != null) {
+        setState(() {
+          _username = user['username']; // Fetch username
+          _isLoading = false; // Stop loading spinner
+        });
+        _fetchTotals();
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Error: User not found.")),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      print("Error fetching username: $e");
+    }
+  }
+
+Future<void> _fetchTotals() async {
+    // Get user ID based on the username
+    int? userId = await _databaseService.getUserId(_username);
+
+    if (userId != null) {
+      // Get total expenses and budget based on the user ID
+      double expense = await _databaseService.getTotalExpenses(userId);
+      double budget = await _databaseService.getTotalBudget(userId);
+
+      setState(() {
+        totalExpense = expense;
+        totalBudget = budget;
+       remainingMoney = calculateRemainingMoney(budget, expense);  // Correct calculation
+             print("Remaining Money: $remainingMoney");
+      });
+    } else {
+      // Handle case where user is not found
+      print('User not found');
+    }
+  }
+
 
 
 
@@ -25,7 +100,6 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         title: const Text("Homepage", style: TextStyle(color: Colors.white),),
         backgroundColor: const Color.fromRGBO(40, 54, 24, 1),
@@ -47,19 +121,28 @@ class _HomepageState extends State<Homepage> {
                       //color: Colors.blueGrey,
                       child: Image.asset("assets/images/pig5.png",width: 120, height: 120)
                       ),
-                
-                    Container(
-                      margin: const EdgeInsets.all(10),
-                      //color: Colors.lightBlue,
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("My Money", style: TextStyle(fontSize: 18,color: Colors.white ),),
-                          SizedBox(height: 10,),
-                          Text("P5000.00", style: TextStyle(fontSize: 28,fontWeight: FontWeight.bold, color: Colors.white),),
-                        ],
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+              'Hello, $_username', // Display the username
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+                      const Text(
+                        "My Money", 
+                        style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
-                    ),
+                      const SizedBox(height: 10),
+                      Text(
+                        remainingMoney.toStringAsFixed(2), 
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                )
+
                   ],
                 ),
               ),
@@ -110,11 +193,11 @@ class _HomepageState extends State<Homepage> {
                           ),
         
                           // Lower part with white color
-                          const Expanded(
+                          Expanded(
                             child: Center(
                               child: Text(
-                                "₱3300.00",
-                                style: TextStyle(
+                                "${totalExpense}",
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -164,17 +247,17 @@ class _HomepageState extends State<Homepage> {
                               children: [
                                 Icon(Icons.arrow_upward, color: Colors.white, size: 20),
                                 SizedBox(width: 5),
-                                Text("Expenses", style: TextStyle(color: Colors.white, fontSize: 20)),
+                                Text("Budget", style: TextStyle(color: Colors.white, fontSize: 20)),
                               ],
                             ),
                           ),
         
                           // Lower part with white color
-                          const Expanded(
+                          Expanded(
                             child: Center(
                               child: Text(
-                                "₱3300.00",
-                                style: TextStyle(
+                                "$totalBudget",
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -190,7 +273,7 @@ class _HomepageState extends State<Homepage> {
               ),
         
         
-              const SizedBox(height: 50),
+              const SizedBox(height: 40),
         
               Container(
                 padding: const EdgeInsets.only(left: 20),
@@ -433,7 +516,7 @@ class _HomepageState extends State<Homepage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.pushNamed(context, '/record');
+          Navigator.pushNamed(context, '/record', arguments: {'username' : _username});
         },
         backgroundColor: Colors.green,
           shape: const CircleBorder(),
