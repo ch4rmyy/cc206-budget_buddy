@@ -79,13 +79,54 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
+  void _addEventDialog(BuildContext context) {
+  final TextEditingController _eventController = TextEditingController();
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Add Task',
+      style: TextStyle(color: Color(0xFF283618), fontSize: 20),
+      ),
+      content: TextField(
+        controller: _eventController,
+        decoration: const InputDecoration(hintText: 'Enter task',
+        hintStyle: TextStyle(color: Colors.grey, fontSize: 15)
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () async {
+            // final db = DBHelper();
+            // final date = "${_selectedDay!.year}-${_selectedDay!.month}-${_selectedDay!.day}";
+            // await db.insertEvent(date, _eventController.text);
+    
+            // // Refresh the selected events
+            // _selectedEvents.value = await _getEventsForDay(_selectedDay!);
+            // Navigator.of(context).pop();
+          },
+          child: const Text('Add'),
+        ),
+      ],
+    ),
+  );
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calendar'),
+        title: const Text('Budget Plans'),
         backgroundColor: const Color(0xFF606C38),
-        toolbarHeight: 70,
+        foregroundColor: const Color(0xFFFEFAE0),
+        toolbarHeight: 80,
         iconTheme: const IconThemeData(color: Color(0xFFFEFAE0)),
       ),
       //drawer: MainDrawer(),
@@ -118,9 +159,26 @@ class _CalendarState extends State<Calendar> {
                   rangeSelectionMode: _rangeSelectionMode,
                   eventLoader: _getEventsForDay,
                   startingDayOfWeek: StartingDayOfWeek.monday,
+
+                  headerStyle: HeaderStyle(
+                    titleTextStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFFEFAE0)
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 208, 157, 99),
+                      borderRadius: BorderRadius.circular(16),
+                    ), 
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                    leftChevronIcon: const Icon(Icons.chevron_left, color: Color(0xFFFEFAE0),),
+                    rightChevronIcon: const Icon(Icons.chevron_right, color: Color(0xFFFEFAE0),)
+                  ),
+
                   calendarStyle: const CalendarStyle(
-                    // customize tShe UI
                     defaultTextStyle: TextStyle(fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
+                      
                       todayDecoration: BoxDecoration(
                       color: Color.fromARGB(255, 234, 187, 135), 
                       shape: BoxShape.circle,
@@ -136,21 +194,7 @@ class _CalendarState extends State<Calendar> {
                     
                     outsideDaysVisible: true,
                   ),
-                        
-                  //December 2024
-                  headerStyle: HeaderStyle(
-                    titleTextStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFFEFAE0)
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 208, 157, 99),
-                      borderRadius: BorderRadius.circular(16),
-                    )
-                  ),
-                        
-                        
+     
                   onDaySelected: _onDaySelected,
                   onRangeSelected: _onRangeSelected,
                   onFormatChanged: (format) {
@@ -169,34 +213,63 @@ class _CalendarState extends State<Calendar> {
 
           Expanded(
             child: ValueListenableBuilder<List<Event>>(
-              valueListenable:_selectedEvents,
-              builder: (context, value, _){
-                return ListView.builder(itemCount: value.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    decoration: BoxDecoration(
-                      //border: Border.all(color: Color(0xFF606C38), width: 2),
-                      color: const Color(0xFFFEFAE0),
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [ 
-                        BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 3,
-                        spreadRadius: 1,
-                        offset: const Offset(0 , 2)
-                      )]
-                    ),
-                    child: ListTile(
-                      onTap: () => print('${value[index]}'),
-                      title: Text('${value[index]}'),
-                    ),
-                  );
-                },
+              valueListenable: _selectedEvents,
+              builder: (context, value, _) {
+                return ListView.builder(
+                  itemCount: value.length,
+                  itemBuilder: (context, index) {
+                    final event = value[index];
+                    return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFEFAE0),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 3,
+                            spreadRadius: 1,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: CheckboxListTile(
+                        value: false, // Default unchecked state
+                        onChanged: (isChecked) async {
+                          if (isChecked == true) {
+                            // final db = DBHelper();
+                            // await db.deleteEvent(event.id); // Delete task from database
+                            // // Refresh the event list
+                            // _selectedEvents.value =
+                            //     await _getEventsForDay(_selectedDay!);
+                          }
+                        },
+                        title: Text(event.title),
+                      ),
+                    );
+                  },
                 );
-              }
-            ))
-      ])
+              },
+            ),
+          ),
+      ]),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          if (_selectedDay != null) {
+            _addEventDialog(context);
+          } else {
+            print("No day selected");
+          }
+        },
+        backgroundColor: Color(0xFF283618),
+        elevation: 3,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add,
+        color: Color(0xFFFEFAE0),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat, 
+
     );
   }
 }
