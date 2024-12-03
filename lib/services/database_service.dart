@@ -179,6 +179,56 @@ Future<void> printAllExpenses() async {
 
 
 
+
+  Future<void> checkTableInfo() async {
+  final db = await database;
+  final budgetTableInfo = await db.rawQuery('PRAGMA table_info($_budgetTableName)');
+  final expenseTableInfo = await db.rawQuery('PRAGMA table_info($_expenseTableName)');
+  final version = await db.rawQuery('PRAGMA user_version');
+  print('Database version: ${version.first['user_version']}');
+  print('Budget Table Info: $budgetTableInfo');
+  print('Expense Table Info: $expenseTableInfo');
+}
+
+Future<void> printAllExpenses() async {
+  final db = await database;
+  final List<Map<String, dynamic>> expenses = await db.query(_expenseTableName);
+
+  print('Expenses in the database:');
+  for (var expense in expenses) {
+    print('ID: ${expense[_expenseIdColumnName]}, User ID: ${expense[_expenseUserIdColumnName]}, Amount: ${expense[_expenseAmountColumnName]}, Category: ${expense[_expenseCategoryColumnName]}, Date: ${expense[_expenseDateColumnName]}');
+  }
+}
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   Future<void> addUser(String email, String username, String password) async {
 
     //to be delete
