@@ -1,4 +1,5 @@
 import 'package:cc206_budget_buddy/drawers/editProfile.dart';
+import 'package:cc206_budget_buddy/drawers/manageAccount.dart';
 import 'package:cc206_budget_buddy/features/calendar.dart';
 import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/sign_up_page.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         '/idprofile': (BuildContext ctx) => ProfileEditorScreen(),
         '/record': (BuildContext ctx) => const Records(),
         '/calendar': (BuildContext ctx) => Calendar(),
+        '/manageAcc': (BuildContext ctx) => ManageAccountPage(),
 
       },
     );

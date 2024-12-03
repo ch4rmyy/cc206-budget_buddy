@@ -30,6 +30,7 @@ flutter:
   assets:
     - assets/images/pig5.png
     - assets/
+    - assets/images/icon.png
 
 flutter_launcher_icons:
   android: "launcher_icon"
