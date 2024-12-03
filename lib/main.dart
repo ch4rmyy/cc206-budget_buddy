@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
 
       initialRoute: '/calendar',
       routes: {
-        '/login': (BuildContext ctx) => const LogInPage(),
+        '/login': (BuildContext ctx) => LogInPage(),
         '/homepage': (BuildContext ctx) => const Homepage(),
         '/signup': (BuildContext ctx) => const SignUpPage(),
         '/nav': (BuildContext ctx) => const MainNavigator(),
