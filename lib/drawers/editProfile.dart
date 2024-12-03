@@ -16,19 +16,35 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
   final _mottoController = TextEditingController();
   String _selectedGender = 'Male';
 
+// /* SCSS RGB */
+// $cornsilk: rgba(254, 250, 224, 1) 0xFFFEFAE0;
+// $earth-yellow: rgba(221, 161, 94, 1);
+// $tigers-eye: rgba(188, 108, 37, 1);
+// $dark-moss-green: rgba(96, 108, 56, 1);
+// $pakistan-green: rgba(40, 54, 24, 1) 0xFF283618;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile'),
-        backgroundColor: Color(0xFF283618),
-        foregroundColor: Color(0xFFFEFAE0), // Matches the dark green theme
+        title: const Text('Edit Profile'),
+        backgroundColor: Color(0xFF606C38),
+        foregroundColor: Color(0xFFFEFAE0),
+        toolbarHeight: 70,
+        leading: 
+          IconButton(
+            icon: const Icon(Icons.arrow_back, color: Color(0xFFFEFAE0)),
+            onPressed: (){
+              Navigator.pop(context);
+            } 
+
+          ),
+          // Matches the dark green theme
       ),
       body: Container(
-        color: Color(0xFF283618),
+        color: Color(0xFFFEFAE0),
         child: Center(
           child: Card(
-            color: Color(0xFF283618), // Main card background color
+            color: Color(0xFFFEFAE0), // Main card background color
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -43,9 +59,15 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         // Profile picture
-                        const CircleAvatar(
-                          radius: 50,
-                          backgroundImage: AssetImage(''),
+                        Container(
+                          width: 150,
+                          height: 150,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/pig8.png')),
+                              
+                          ),
                         ),
                         const SizedBox(height: 16),
                         // Name
@@ -53,48 +75,48 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
                           controller: _nameController,
                           decoration: const InputDecoration(
                             labelText: 'Name',
-                            labelStyle: TextStyle(color: Colors.white70),
+                            labelStyle: TextStyle(color: Color(0xFF283618), fontWeight: FontWeight.w600),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white54),
+                              borderSide: BorderSide(color: Color(0xFF283618)),
                             ),
                           ),
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Color(0xFF283618)),
                           validator: (value) => value == null || value.isEmpty
                               ? 'Please enter your name'
                               : null,
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         // Email
                         TextFormField(
                           controller: _emailController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Email',
-                            labelStyle: TextStyle(color: Colors.white70),
+                            labelStyle: TextStyle(color: Color(0xFF283618), fontWeight: FontWeight.w600),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white54),
+                              borderSide: BorderSide(color: Color(0xFF283618)),
                             ),
                           ),
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Color(0xFF283618)),
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) =>
                               value == null || !value.contains('@')
                                   ? 'Please enter a valid email'
                                   : null,
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         // Address
                         TextFormField(
                           controller: _addressController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Address',
-                            labelStyle: TextStyle(color: Colors.white70),
+                            labelStyle: TextStyle(color: Color(0xFF283618), fontWeight: FontWeight.w600),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white54),
+                              borderSide: BorderSide(color: Color(0xFF283618)),
                             ),
                           ),
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         // Phone Number
                         Row(
                           children: [
@@ -103,59 +125,59 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
                               child: TextFormField(
                                 controller: TextEditingController(text: "+63"),
                                 enabled: false,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   labelText: 'Code',
-                                  labelStyle: TextStyle(color: Colors.white70),
+                                  labelStyle: TextStyle(color: Color(0xFF283618), fontWeight: FontWeight.w600),
                                   border: InputBorder.none,
                                 ),
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Color(0xFF283618)),
                               ),
                             ),
                             Expanded(
                               child: TextFormField(
                                 controller: _phoneNumberController,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   labelText: 'Phone Number',
-                                  labelStyle: TextStyle(color: Colors.white70),
+                                  labelStyle: TextStyle(color: Color(0xFF283618), fontWeight: FontWeight.w600),
                                   enabledBorder: UnderlineInputBorder(
                                     borderSide:
-                                        BorderSide(color: Colors.white54),
+                                        BorderSide(color: Color(0xFF283618)),
                                   ),
                                 ),
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Color(0xFF283618)),
                                 keyboardType: TextInputType.phone,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         // Occupation
                         TextFormField(
                           controller: _occupationController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Occupation',
-                            labelStyle: TextStyle(color: Colors.white70),
+                            labelStyle: TextStyle(color: Color(0xFF283618), fontWeight: FontWeight.w600),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white54),
+                              borderSide: BorderSide(color: Color(0xFF283618)),
                             ),
                           ),
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Color(0xFF283618)),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         // Birthdate
                         TextFormField(
                           controller: _birthdateController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Birthdate',
-                            labelStyle: TextStyle(color: Colors.white70),
+                            labelStyle: TextStyle(color: Color(0xFF283618), fontWeight: FontWeight.w600),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white54),
+                              borderSide: BorderSide(color: Color(0xFF283618)),
                             ),
                           ),
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Color(0xFF283618)),
                           keyboardType: TextInputType.datetime,
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         // Gender Dropdown
                         DropdownButtonFormField<String>(
                           value: _selectedGender,
@@ -169,33 +191,33 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value,
-                                  style: TextStyle(color: Colors.white)),
+                                  style: const TextStyle(color: Color(0xFF283618), fontWeight: FontWeight.w600)),
                             );
                           }).toList(),
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Gender',
-                            labelStyle: TextStyle(color: Colors.white70),
+                            labelStyle: TextStyle(color: Color.fromARGB(255, 85, 106, 61), fontWeight: FontWeight.w600),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white54),
+                              borderSide: BorderSide(color: Color(0xFF283618)),
                             ),
                           ),
-                          dropdownColor: Colors.lightGreen.shade400,
+                          dropdownColor: const Color(0xFF606C38),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         // Motto
                         TextFormField(
                           controller: _mottoController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Motto in Life',
-                            labelStyle: TextStyle(color: Colors.white70),
+                            labelStyle: TextStyle(color: Color(0xFF283618), fontWeight: FontWeight.w600),
                             enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white54),
+                              borderSide: BorderSide(color: Color(0xFF283618)),
                             ),
                           ),
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Color(0xFF283618)),
                           maxLines: 3,
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         // Save Button
                         SizedBox(
                           width: double.infinity, // Full-width button
@@ -210,13 +232,13 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  Color(0xFFE5E5C5), // Light button color
-                              foregroundColor: Colors.black, // Text color
+                                  Color.fromRGBO(227, 135, 55, 1), // Light button color
+                              foregroundColor: const Color(0xFFFEFAE0), // Text color
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            child: Text('Save Changes'),
+                            child: const Text('Save Changes', style: TextStyle(fontWeight: FontWeight.w700),),
                           ),
                         ),
                       ],
