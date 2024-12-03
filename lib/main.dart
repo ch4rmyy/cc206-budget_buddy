@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(),
       ),
 
-      initialRoute: '/idprofile',
+      initialRoute: '/login',
       routes: {
         '/login': (BuildContext ctx) => LogInPage(),
         '/homepage': (BuildContext ctx) => const Homepage(),

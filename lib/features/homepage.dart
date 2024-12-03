@@ -1,4 +1,4 @@
-import 'dart:ffi';
+//import 'dart:ffi';
 
 import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
 import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
@@ -161,9 +161,10 @@ Future<void> _fetchTotals() async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Homepage", style: TextStyle(color: Colors.white),),
-        backgroundColor: const Color.fromRGBO(40, 54, 24, 1),
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text("Homepage",),
+        backgroundColor: const Color(0xFF606C38),
+        foregroundColor: const Color(0xFFFEFAE0),
+        toolbarHeight: 70,
       ),
       drawer: const Maindrawer(),
       backgroundColor: const Color.fromARGB(156, 255, 255, 255),
@@ -173,14 +174,14 @@ Future<void> _fetchTotals() async {
             children: [
         
               Container(
-                color: const Color.fromRGBO(40, 54, 24, 1),
+                color: const Color(0xFF606C38),
                 padding: const EdgeInsets.only(left: 20.0),
                 child: Row(
                   children: [
-                    Container(
+                  
                       //color: Colors.blueGrey,
-                      child: Image.asset("assets/images/pig5.png",width: 120, height: 120)
-                      ),
+                      Image.asset("assets/images/pig5.png",width: 120, height: 120),
+                      
                 Container(
                   margin: const EdgeInsets.all(10),
                   child: Column(
@@ -188,16 +189,16 @@ Future<void> _fetchTotals() async {
                     children: [
                       Text(
               'Hello, $_username', // Display the username
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFFEFAE0)),
             ),
                       const Text(
                         "My Money", 
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                        style: TextStyle(fontSize: 18, color: Color(0xFFFEFAE0)),
                       ),
                       const SizedBox(height: 10),
                       Text(
                         remainingMoney.toStringAsFixed(2), 
-                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 255, 255, 255)),
                       ),
                     ],
                   ),
@@ -210,9 +211,8 @@ Future<void> _fetchTotals() async {
         
               const SizedBox(height: 30,),
         
-              Container(
                 //color: Colors.cyan,
-                child: Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center, // Centers columns horizontally
                   children: [
         
@@ -221,13 +221,13 @@ Future<void> _fetchTotals() async {
                       height: 80,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10), // Rounded corners
-                        color: Colors.white,
+                        color: const Color(0xFFFEFAE0),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
+                            color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
                             spreadRadius: 2, // How much the shadow spreads
-                            blurRadius: 8, // Softness of the shadow
-                            offset: Offset(0, 4), // Horizontal and vertical offset
+                            blurRadius: 5, // Softness of the shadow
+                            offset: const Offset(0, 2), // Horizontal and vertical offset
                           ),
                         ], // Default color for the lower part
                       ),
@@ -237,7 +237,7 @@ Future<void> _fetchTotals() async {
                           Container(
                             height: 40, // Half the height
                             decoration: const BoxDecoration(
-                              color: Colors.green,
+                              color: Color(0xFFBC6C25),
                               borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(10), // Only top corners rounded
                               ),
@@ -245,9 +245,9 @@ Future<void> _fetchTotals() async {
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.arrow_downward, color: Colors.white, size: 20),
+                                Icon(Icons.arrow_downward, color: Color(0xFFFEFAE0), size: 20),
                                 SizedBox(width: 5),
-                                Text("Expenses", style: TextStyle(color: Colors.white, fontSize: 20)),
+                                Text("Expenses", style: TextStyle(color: Color(0xFFFEFAE0), fontSize: 20)),
                               ],
                             ),
                           ),
@@ -256,7 +256,7 @@ Future<void> _fetchTotals() async {
                           Expanded(
                             child: Center(
                               child: Text(
-                                "${totalExpense}",
+                                "$totalExpense",
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 18,
@@ -281,13 +281,13 @@ Future<void> _fetchTotals() async {
                       height: 80,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10), // Rounded corners
-                        color: Colors.white,
+                        color: const Color(0xFFFEFAE0),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
+                            color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
                             spreadRadius: 2, // How much the shadow spreads
                             blurRadius: 8, // Softness of the shadow
-                            offset: Offset(0, 4), // Horizontal and vertical offset
+                            offset: const Offset(0, 4), // Horizontal and vertical offset
                           ),
                         ], // Default color for the lower part // Default color for the lower part
                       ),
@@ -297,7 +297,7 @@ Future<void> _fetchTotals() async {
                           Container(
                             height: 40, // Half the height
                             decoration: const BoxDecoration(
-                              color: Colors.green,
+                              color: Color(0xFF283618),
                               borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(10), // Only top corners rounded
                               ),
@@ -305,9 +305,9 @@ Future<void> _fetchTotals() async {
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.arrow_upward, color: Colors.white, size: 20),
+                                Icon(Icons.arrow_upward, color: Color(0xFFFEFAE0), size: 20),
                                 SizedBox(width: 5),
-                                Text("Budget", style: TextStyle(color: Colors.white, fontSize: 20)),
+                                Text("Budget", style: TextStyle(color: Color(0xFFFEFAE0), fontSize: 20)),
                               ],
                             ),
                           ),
@@ -330,10 +330,10 @@ Future<void> _fetchTotals() async {
                     ),
                   ],
                 ),
-              ),
+             
         
         
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
         
               Container(
                 padding: const EdgeInsets.only(left: 20),
@@ -341,10 +341,10 @@ Future<void> _fetchTotals() async {
                 //color: Colors.deepPurple,
                 child: const Text("Categories", style: TextStyle(fontSize: 28,fontWeight: FontWeight.bold))),
         
-              const SizedBox(height: 30),
+              const SizedBox(height: 15),
         
               SizedBox(
-                height: 210,
+                height: 280,
                 width: double.infinity,
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.only(top: 10),
@@ -352,15 +352,15 @@ Future<void> _fetchTotals() async {
                     children: [
                       Container(
                         width: 350,
-                        height: 50,
+                        height: 40,
                         margin: const EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10), // Rounded corners
                           //color: Colors.white,
                           gradient: const LinearGradient(
                             colors: [
-                              Colors.green, // Green on the left
-                              Colors.white, // White on the right
+                              Color(0xFF606C38), // Green on the left
+                              Color(0xFFFEFAE0), // White on the right
                             ],
                             stops: [0.6, 0.5], // Define where each color stops
                             begin: Alignment.centerLeft,
@@ -368,7 +368,7 @@ Future<void> _fetchTotals() async {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
+                            color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
                               spreadRadius: 2, // How much the shadow spreads
                               blurRadius: 8, // Softness of the shadow
                               offset: const Offset(0, 4), // Horizontal and vertical offset
@@ -376,9 +376,9 @@ Future<void> _fetchTotals() async {
                           ], // Default color for the lower part // Default color for the lower part
                         ),
                         child: ListTile(
-                           leading: Icon(Icons.car_crash),
-                          title: Text("Food"),
-                          trailing: Text("${foodSpending.toStringAsFixed(2)}"),
+                           leading: const Icon(Icons.apple, color: Color(0xFFFEFAE0),),
+                          title: const Text("Food", style: TextStyle(color: Color(0xFFFEFAE0), fontWeight: FontWeight.w600),),
+                          trailing: Text(foodSpending.toStringAsFixed(2), style: const TextStyle(fontSize: 14),),
                           
                         ),
                       ),
@@ -393,8 +393,8 @@ Future<void> _fetchTotals() async {
                           //color: Colors.white,
                           gradient: const LinearGradient(
                             colors: [
-                              Colors.green, // Green on the left
-                              Colors.white, // White on the right
+                              Color(0xFF606C38), // Green on the left
+                              Color(0xFFFEFAE0), // White on the right
                             ],
                             stops: [0.6, 0.5], // Define where each color stops
                             begin: Alignment.centerLeft,
@@ -402,7 +402,7 @@ Future<void> _fetchTotals() async {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
+                            color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
                               spreadRadius: 2, // How much the shadow spreads
                               blurRadius: 8, // Softness of the shadow
                               offset: const Offset(0, 4), // Horizontal and vertical offset
@@ -410,9 +410,9 @@ Future<void> _fetchTotals() async {
                           ], // Default color for the lower part // Default color for the lower part
                         ),
                         child: ListTile(
-                          leading: Icon(Icons.car_crash),
-                          title: Text("Transportation"),
-                          trailing: Text("${transportSpending.toStringAsFixed(2)}"),
+                           leading: const Icon(Icons.car_crash, color: Color(0xFFFEFAE0),),
+                          title: const Text("Transportation", style: TextStyle(color: Color(0xFFFEFAE0), fontWeight: FontWeight.w600),),
+                          trailing: Text(transportSpending.toStringAsFixed(2), style: const TextStyle(fontSize: 14)),
                         ),
                       ),
                       
@@ -428,8 +428,8 @@ Future<void> _fetchTotals() async {
                           //color: Colors.white,
                           gradient: const LinearGradient(
                             colors: [
-                              Colors.green, // Green on the left
-                              Colors.white, // White on the right
+                              Color(0xFF606C38), // Green on the left
+                              Color(0xFFFEFAE0), // White on the right
                             ],
                             stops: [0.6, 0.5], // Define where each color stops
                             begin: Alignment.centerLeft,
@@ -437,7 +437,7 @@ Future<void> _fetchTotals() async {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
+                            color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
                               spreadRadius: 2, // How much the shadow spreads
                               blurRadius: 8, // Softness of the shadow
                               offset: const Offset(0, 4), // Horizontal and vertical offset
@@ -445,9 +445,9 @@ Future<void> _fetchTotals() async {
                           ], // Default color for the lower part // Default color for the lower part
                         ),
                         child: ListTile(
-                          leading: Icon(Icons.car_crash),
-                          title: Text("School Fees"),
-                          trailing: Text("${schoolsSpending.toStringAsFixed(2)}"),
+                           leading: const Icon(Icons.school, color: Color(0xFFFEFAE0),),
+                          title: const Text("School Fees", style: TextStyle(color: Color(0xFFFEFAE0), fontWeight: FontWeight.w600),),
+                          trailing: Text(schoolsSpending.toStringAsFixed(2), style: const TextStyle(fontSize: 14)),
                         ),
                       ),
                       
@@ -466,8 +466,8 @@ Future<void> _fetchTotals() async {
                           //color: Colors.white,
                           gradient: const LinearGradient(
                             colors: [
-                              Colors.green, // Green on the left
-                              Colors.white, // White on the right
+                              Color(0xFF606C38), // Green on the left
+                              Color(0xFFFEFAE0), // White on the right
                             ],
                             stops: [0.6, 0.5], // Define where each color stops
                             begin: Alignment.centerLeft,
@@ -475,7 +475,7 @@ Future<void> _fetchTotals() async {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
+                            color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
                               spreadRadius: 2, // How much the shadow spreads
                               blurRadius: 8, // Softness of the shadow
                               offset: const Offset(0, 4), // Horizontal and vertical offset
@@ -483,9 +483,9 @@ Future<void> _fetchTotals() async {
                           ], // Default color for the lower part // Default color for the lower part
                         ),
                         child: ListTile(
-                          leading: Icon(Icons.car_crash),
-                          title: Text("Wants"),
-                          trailing: Text("${wantsSpending.toStringAsFixed(2)}"),
+                           leading: const Icon(Icons.star, color: Color(0xFFFEFAE0),),
+                          title: const Text("Wants", style: TextStyle(color: Color(0xFFFEFAE0), fontWeight: FontWeight.w600),),
+                          trailing: Text(wantsSpending.toStringAsFixed(2), style: const TextStyle(fontSize: 14)),
                         ),
                       ),
                       
@@ -503,8 +503,8 @@ Future<void> _fetchTotals() async {
                           //color: Colors.white,
                           gradient: const LinearGradient(
                             colors: [
-                              Colors.green, // Green on the left
-                              Colors.white, // White on the right
+                              Color(0xFF606C38), // Green on the left
+                              Color(0xFFFEFAE0), // White on the right
                             ],
                             stops: [0.6, 0.5], // Define where each color stops
                             begin: Alignment.centerLeft,
@@ -512,7 +512,7 @@ Future<void> _fetchTotals() async {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
+                            color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
                               spreadRadius: 2, // How much the shadow spreads
                               blurRadius: 8, // Softness of the shadow
                               offset: const Offset(0, 4), // Horizontal and vertical offset
@@ -520,9 +520,9 @@ Future<void> _fetchTotals() async {
                           ], // Default color for the lower part // Default color for the lower part
                         ),
                         child:ListTile(
-                          leading: Icon(Icons.car_crash),
-                          title: Text("Boarding Fees"),
-                          trailing: Text("${boardingsSpending.toStringAsFixed(2)}"),
+                           leading: const Icon(Icons.house, color: Color(0xFFFEFAE0),),
+                          title: const Text("Boarding Fees", style: TextStyle(color: Color(0xFFFEFAE0), fontWeight: FontWeight.w600),),
+                          trailing: Text(boardingsSpending.toStringAsFixed(2), style: const TextStyle(fontSize: 14)),
                         ),
                       ),
                       
@@ -543,8 +543,8 @@ Future<void> _fetchTotals() async {
                           //color: Colors.white,
                           gradient: const LinearGradient(
                             colors: [
-                              Colors.green, // Green on the left
-                              Colors.white, // White on the right
+                              Color(0xFF606C38), // Green on the left
+                              Color(0xFFFEFAE0), // White on the right
                             ],
                             stops: [0.6, 0.5], // Define where each color stops
                             begin: Alignment.centerLeft,
@@ -552,7 +552,7 @@ Future<void> _fetchTotals() async {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
+                            color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
                               spreadRadius: 2, // How much the shadow spreads
                               blurRadius: 8, // Softness of the shadow
                               offset: const Offset(0, 4), // Horizontal and vertical offset
@@ -560,9 +560,9 @@ Future<void> _fetchTotals() async {
                           ], // Default color for the lower part // Default color for the lower part
                         ),
                         child: ListTile(
-                          leading: Icon(Icons.car_crash),
-                          title: Text("Others"),
-                          trailing: Text("${othersSpending.toStringAsFixed(2)}"),
+                           leading: const Icon(Icons.category, color: Color(0xFFFEFAE0),),
+                          title: const Text("Others", style: TextStyle(color: Color(0xFFFEFAE0), fontWeight: FontWeight.w600),),
+                          trailing: Text(othersSpending.toStringAsFixed(2), style: const TextStyle(fontSize: 14)),
                         ),
                       ),  
                     ],
@@ -579,10 +579,17 @@ Future<void> _fetchTotals() async {
         onPressed: (){
           Navigator.pushNamed(context, '/record', arguments: {'username' : _username});
         },
-        backgroundColor: Colors.green,
+        backgroundColor: const Color(0xFF283618),
           shape: const CircleBorder(),
-        child: const Icon(Icons.add)
+        child: const Icon(Icons.add, color: Color(0xFFFEFAE0),)
       ),
     );
   }
 }
+
+// /* SCSS RGB */
+// $cornsilk: rgba(254, 250, 224, 1) 0xFFFEFAE0;
+// $earth-yellow: rgba(221, 161, 94, 1);
+// $tigers-eye: rgba(188, 108, 37, 1) 0xFFBC6C25;
+// $dark-moss-green: rgba(96, 108, 56, 1) 0xFF606C38;
+// $pakistan-green: rgba(40, 54, 24, 1) 0xFF283618;
