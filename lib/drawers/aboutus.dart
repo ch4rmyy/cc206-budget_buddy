@@ -6,11 +6,12 @@ class AboutUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 40, 54, 24),
+      backgroundColor: const Color(0xFFFEFAE0),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 40, 54, 24),
+        backgroundColor: const Color.fromRGBO(96, 108, 56, 1),
+        toolbarHeight: 70,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_sharp, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFFFEFAE0)),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -25,15 +26,8 @@ class AboutUsScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 12),
                   child: const Text(
                     'About Us',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(color: Color(0xFFFEFAE0), fontSize: 20),
                   ),
-                ),
-                const SizedBox(height: 5),
-                Container(
-                  margin: const EdgeInsets.only(left: 1),
-                  height: 2,
-                  width: 290,
-                  color: Colors.white,
                 ),
               ],
             ),
@@ -50,7 +44,7 @@ class AboutUsScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Image.asset(
-                'assets/images/Picture1.png',
+                'assets/images/icon.png',
                 height: 150,
               ),
             ),
@@ -59,8 +53,8 @@ class AboutUsScreen extends StatelessWidget {
               'BudgetBuddy',
               style: TextStyle(
                 fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                color: Color.fromRGBO(188, 108, 37, 1),
               ),
             ),
             const SizedBox(height: 5),
@@ -68,7 +62,7 @@ class AboutUsScreen extends StatelessWidget {
               'Version 1.1.3',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white,
+                color: Color.fromRGBO(188, 108, 37, 1),
               ),
             ),
           ],

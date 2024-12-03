@@ -21,16 +21,22 @@ class _RatingScreenState extends State<RatingScreen> {
     });
   }
 
+// /* SCSS RGB */
+// $cornsilk: rgba(254, 250, 224, 1) 0xFFFEFAE0;
+// $earth-yellow: rgba(221, 161, 94, 1);
+// $tigers-eye: rgba(188, 108, 37, 1);
+// $dark-moss-green: rgba(96, 108, 56, 1);
+// $pakistan-green: rgba(40, 54, 24, 1) 0xFF283618;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 40, 54, 24),
+      backgroundColor: const Color(0xFFFEFAE0),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 40, 54, 24),
-        elevation: 0,
-        iconTheme: const IconThemeData(
-          
-          color: Colors.white, 
+        backgroundColor: const Color.fromRGBO(96, 108, 56, 1),
+        foregroundColor: Color(0xFFFEFAE0),
+        toolbarHeight: 70,
+        title: const Text("Rate Budget Buddy",
+        style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
       body: Center(
@@ -48,7 +54,7 @@ class _RatingScreenState extends State<RatingScreen> {
                     const Text(
                       'Like BudgetBuddy?',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Color(0xFFFEFAE0),
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -56,7 +62,7 @@ class _RatingScreenState extends State<RatingScreen> {
                     const SizedBox(height: 10),
                     const Text(
                       'Let us know if you like the app by rating us! Your feedback helps improve the app.',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Color(0xFFFEFAE0)),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
@@ -79,14 +85,15 @@ class _RatingScreenState extends State<RatingScreen> {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 76, 97, 51),
-                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                        backgroundColor: const Color.fromARGB(255, 171, 119, 61),
+                        padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
                       ),
                       onPressed: _rating > 0 ? _submitRating : null,
                       child: Text(
                         'Submit',
                         style: TextStyle(
-                          color: _rating > 0 ? Colors.white : Colors.grey,
+                          color: _rating > 0 ? const Color(0xFFFEFAE0) : Colors.grey,
+                          fontWeight: FontWeight.w600
                         ),
                       ),
                     ),
@@ -97,24 +104,23 @@ class _RatingScreenState extends State<RatingScreen> {
                 padding: const EdgeInsets.all(20),
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 54, 71, 36),
+                  color: const Color(0xFF283618),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Column(
+                child: const Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.check_circle,
                       color: Colors.green,
                       size: 50,
                     ),
-                    const SizedBox(height: 10),
-                    const Text(
+                    SizedBox(height: 10),
+                    Text(
                       'Rating submitted successfully',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Color(0xFFFEFAE0),
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
