@@ -32,17 +32,77 @@ class _HomepageState extends State<Homepage> {
   return budget - expense;
 }
 
-  @override
+
+double foodSpending = 0.0;
+double transportSpending = 0.0;
+double schoolsSpending = 0.0;
+double boardingsSpending = 0.0;
+double wantsSpending = 0.0;
+double othersSpending = 0.0;
+
+
+  // void didChangeDependencies() {
+    // super.didChangeDependencies();
+    // final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    // _fetchUsername(args['email']!, args['password']!);
+  // }
+
+  // @override
+// void initState() {
+  // super.initState();
+  // _fetchUserIdAndCategorySpending();
+// }
+
+ @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // Extract the arguments and initialize data
     final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
-    _fetchUsername(args['email']!, args['password']!);
+    initializeData(args['email']!, args['password']!);
   }
 
-  @override
-void initState() {
-  super.initState();
+  Future<void> initializeData(String email, String password) async {
+    await _fetchUsername(email, password); // Fetch the username first
+    await _fetchUserIdAndCategorySpending(); // Then fetch spending
+  }
+
+Future<void> _fetchUserIdAndCategorySpending() async {
+  print("Fetched userId: $_username"); // Debugging line
+  final userId = await _databaseService.getUserId(_username); // Fetch the userId using the username
+  
+  if (userId != null) {
+    _fetchCategorySpending(userId); // Fetch category spending once userId is available
+  } else {
+    print("User not found!");
+    // Handle the case when userId is not found
+  }
 }
+
+void _fetchCategorySpending(int userId) async {
+  foodSpending = await _databaseService.getTotalSpendingForCategory(userId, "Food");
+  transportSpending = await _databaseService.getTotalSpendingForCategory(userId, "Transportation");
+  schoolsSpending = await _databaseService.getTotalSpendingForCategory(userId, "School Fees");
+  boardingsSpending = await _databaseService.getTotalSpendingForCategory(userId, "Boarding Fees");
+  wantsSpending = await _databaseService.getTotalSpendingForCategory(userId, "Wants");
+  othersSpending = await _databaseService.getTotalSpendingForCategory(userId, "Others");
+
+
+print("Food Spending: $foodSpending"); // Debug
+  print("Transport Spending: $transportSpending"); // Debug
+  print("School Fees Spending: $schoolsSpending"); // Debug
+  print("Boarding Fees Spending: $boardingsSpending"); // Debug
+  print("Wants Spending: $wantsSpending"); // Debug
+  print("Others Spending: $othersSpending"); // Debug
+  
+
+  setState(() {}); // Trigger rebuild when values are updated
+}
+
+  //@override
+
+ // Make sure to pass the userId here
+
+
 
 // Fetch total expense and total budget for the user based on username
 
@@ -315,10 +375,11 @@ Future<void> _fetchTotals() async {
                             ),
                           ], // Default color for the lower part // Default color for the lower part
                         ),
-                        child: const ListTile(
+                        child: ListTile(
                            leading: Icon(Icons.car_crash),
-                          title: Text("Transportation"),
-                          trailing: Text("P300"),
+                          title: Text("Food"),
+                          trailing: Text("${foodSpending.toStringAsFixed(2)}"),
+                          
                         ),
                       ),
                       
@@ -348,10 +409,10 @@ Future<void> _fetchTotals() async {
                             ),
                           ], // Default color for the lower part // Default color for the lower part
                         ),
-                        child: const ListTile(
+                        child: ListTile(
                           leading: Icon(Icons.car_crash),
                           title: Text("Transportation"),
-                          trailing: Text("P300"),
+                          trailing: Text("${transportSpending.toStringAsFixed(2)}"),
                         ),
                       ),
                       
@@ -383,89 +444,12 @@ Future<void> _fetchTotals() async {
                             ),
                           ], // Default color for the lower part // Default color for the lower part
                         ),
-                        child: const ListTile(
+                        child: ListTile(
                           leading: Icon(Icons.car_crash),
-                          title: Text("Transportation"),
-                          trailing: Text("P300"),
+                          title: Text("School Fees"),
+                          trailing: Text("${schoolsSpending.toStringAsFixed(2)}"),
                         ),
                       ),
-                      
-                      
-                      
-                      
-                      
-                      
-                      
-                      Container(
-                        width: 350,
-                        height: 50,
-                        margin: const EdgeInsets.only(bottom: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10), // Rounded corners
-                          //color: Colors.white,
-                          gradient: const LinearGradient(
-                            colors: [
-                              Colors.green, // Green on the left
-                              Colors.white, // White on the right
-                            ],
-                            stops: [0.6, 0.5], // Define where each color stops
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
-                              spreadRadius: 2, // How much the shadow spreads
-                              blurRadius: 8, // Softness of the shadow
-                              offset: const Offset(0, 4), // Horizontal and vertical offset
-                            ),
-                          ], // Default color for the lower part // Default color for the lower part
-                        ),
-                        child: const ListTile(
-                          leading: Icon(Icons.car_crash),
-                          title: Text("Transportation"),
-                          trailing: Text("P300"),
-                        ),
-                      ),
-                      
-                      
-                      
-                      
-                      
-                      
-                      Container(
-                        width: 350,
-                        height: 50,
-                        margin: const EdgeInsets.only(bottom: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10), // Rounded corners
-                          //color: Colors.white,
-                          gradient: const LinearGradient(
-                            colors: [
-                              Colors.green, // Green on the left
-                              Colors.white, // White on the right
-                            ],
-                            stops: [0.6, 0.5], // Define where each color stops
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
-                              spreadRadius: 2, // How much the shadow spreads
-                              blurRadius: 8, // Softness of the shadow
-                              offset: const Offset(0, 4), // Horizontal and vertical offset
-                            ),
-                          ], // Default color for the lower part // Default color for the lower part
-                        ),
-                        child: const ListTile(
-                          leading: Icon(Icons.car_crash),
-                          title: Text("Transportation"),
-                          trailing: Text("P300"),
-                        ),
-                      ),
-                      
-                      
                       
                       
                       
@@ -498,10 +482,87 @@ Future<void> _fetchTotals() async {
                             ),
                           ], // Default color for the lower part // Default color for the lower part
                         ),
-                        child: const ListTile(
+                        child: ListTile(
                           leading: Icon(Icons.car_crash),
-                          title: Text("Transportation"),
-                          trailing: Text("P300"),
+                          title: Text("Wants"),
+                          trailing: Text("${wantsSpending.toStringAsFixed(2)}"),
+                        ),
+                      ),
+                      
+                      
+                      
+                      
+                      
+                      
+                      Container(
+                        width: 350,
+                        height: 50,
+                        margin: const EdgeInsets.only(bottom: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10), // Rounded corners
+                          //color: Colors.white,
+                          gradient: const LinearGradient(
+                            colors: [
+                              Colors.green, // Green on the left
+                              Colors.white, // White on the right
+                            ],
+                            stops: [0.6, 0.5], // Define where each color stops
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
+                              spreadRadius: 2, // How much the shadow spreads
+                              blurRadius: 8, // Softness of the shadow
+                              offset: const Offset(0, 4), // Horizontal and vertical offset
+                            ),
+                          ], // Default color for the lower part // Default color for the lower part
+                        ),
+                        child:ListTile(
+                          leading: Icon(Icons.car_crash),
+                          title: Text("Boarding Fees"),
+                          trailing: Text("${boardingsSpending.toStringAsFixed(2)}"),
+                        ),
+                      ),
+                      
+                      
+                      
+                      
+                      
+                      
+                      
+                      
+                      
+                      Container(
+                        width: 350,
+                        height: 50,
+                        margin: const EdgeInsets.only(bottom: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10), // Rounded corners
+                          //color: Colors.white,
+                          gradient: const LinearGradient(
+                            colors: [
+                              Colors.green, // Green on the left
+                              Colors.white, // White on the right
+                            ],
+                            stops: [0.6, 0.5], // Define where each color stops
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(1.0), // Shadow color with opacity
+                              spreadRadius: 2, // How much the shadow spreads
+                              blurRadius: 8, // Softness of the shadow
+                              offset: const Offset(0, 4), // Horizontal and vertical offset
+                            ),
+                          ], // Default color for the lower part // Default color for the lower part
+                        ),
+                        child: ListTile(
+                          leading: Icon(Icons.car_crash),
+                          title: Text("Others"),
+                          trailing: Text("${othersSpending.toStringAsFixed(2)}"),
                         ),
                       ),  
                     ],

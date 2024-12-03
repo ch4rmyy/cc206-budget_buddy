@@ -234,7 +234,7 @@ Future<double> getTotalExpenses(int userId) async {
     whereArgs: [userId],
   );
 print('Query Result: $result');
-  if (result.isNotEmpty) {
+  if (result.isNotEmpty && result.first.values.first != null) {
     return result.first.values.first as double; // Return the sum of expenses
   }
   return 0.0; // Return 0 if no expenses found
@@ -324,6 +324,26 @@ Future<Map<String, dynamic>?> getUserIdByUsername(String username) async {
   }
   return null; // No user found
 }
+
+Future<double> getTotalSpendingForCategory(int userId, String category) async {
+  final db = await database;
+
+  // Query the total spending for the given category and user ID
+  final result = await db.rawQuery('''
+    SELECT SUM($_expenseAmountColumnName) AS total
+    FROM $_expenseTableName
+    WHERE $_expenseUserIdColumnName = ? AND $_expenseCategoryColumnName = ?
+  ''', [userId, category]);
+
+  if (result.isNotEmpty) {
+    final total = result.first['total'];
+    return total != null ? double.parse(total.toString()) : 0.0;
+  }
+
+  return 0.0; // Return 0 if no expenses found for that category
+}
+
+
 
 
 
