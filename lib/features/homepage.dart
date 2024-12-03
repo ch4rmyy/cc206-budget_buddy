@@ -190,17 +190,23 @@ class _HomepageState extends State<Homepage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                'Hello, $_username', // Display the username
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFFFEFAE0)),
-              ),
-                        const Text(
-                          "My Money", 
-                          style: TextStyle(fontSize: 18, color: Color(0xFFFEFAE0)),
+                          'Hello $_username!', // Display the username
+                          style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFFEFAE0)),
                         ),
-                        const SizedBox(height: 10),
+                        const Text(
+                          "My Money",
+                          style: TextStyle(fontSize: 16, color: Color(0xFFFEFAE0)),
+                        ),
+                        const SizedBox(height: 5),
                         Text(
-                          remainingMoney.toStringAsFixed(2), 
-                          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 255, 255, 255)),
+                          remainingMoney.toStringAsFixed(2),
+                          style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromRGBO(255, 255, 255, 1)),
                         ),
                       ],
                     ),
