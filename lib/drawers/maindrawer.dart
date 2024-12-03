@@ -56,14 +56,14 @@ class Maindrawer extends StatelessWidget {
                     title: const Text("Rate Budget Buddy",
                         style:
                             TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                    onTap: () => Navigator.pushNamed(context, '/signup'),
+                    onTap: () => Navigator.pushNamed(context, '/ratings'),
                   ),
                   ListTile(
                     leading: const Icon(Icons.question_mark_rounded),
                     title: const Text("About Us",
                         style:
                             TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                    onTap: () => Navigator.pushNamed(context, '/signup'),
+                    onTap: () => Navigator.pushNamed(context, '/aboutUs'),
                   )
                 ],
               ),

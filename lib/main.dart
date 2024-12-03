@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         '/calendar': (BuildContext ctx) => Calendar(),
         '/manageAcc': (BuildContext ctx) => ManageAccountPage(),
         '/aboutUs': (BuildContext ctx) => const AboutUsScreen(),
-        'ratings': (BuildContext ctx) => const RatingScreen()
+        '/ratings': (BuildContext ctx) => const RatingScreen()
       },
     );
   }
