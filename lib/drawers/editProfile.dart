@@ -21,13 +21,14 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Profile'),
-        backgroundColor: Color(0xFF3C4F3D), // Matches the dark green theme
+        backgroundColor: Color(0xFF283618),
+        foregroundColor: Color(0xFFFEFAE0), // Matches the dark green theme
       ),
       body: Container(
-        color: Color(0xFF3C4F3D),
+        color: Color(0xFF283618),
         child: Center(
           child: Card(
-            color: Color(0xFF3C4F3D), // Main card background color
+            color: Color(0xFF283618), // Main card background color
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -230,3 +231,10 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
     );
   }
 }
+
+// /* SCSS RGB */
+// $cornsilk: rgba(254, 250, 224, 1) 0xFFFEFAE0;
+// $earth-yellow: rgba(221, 161, 94, 1);
+// $tigers-eye: rgba(188, 108, 37, 1);
+// $dark-moss-green: rgba(96, 108, 56, 1);
+// $pakistan-green: rgba(40, 54, 24, 1) 0xFF283618;
