@@ -29,6 +29,12 @@ class DatabaseService {
   final String _expenseCategoryColumnName = "category";
   final String _expenseDateColumnName = "date";
 
+  final String _tasksTableName = "tasks";
+  final String _tasksIdColumnName = "tid";
+  final String _tasksUserIdColumnName = "user_id"; //Foreign Key
+  final String _tasksCloumnName = "description";
+  final String _tasksDateColumnName = "tdate";
+
   
 
 
@@ -61,7 +67,7 @@ class DatabaseService {
     //open the database
     final database = await openDatabase(
   databasePath,
-  version: 3, // Increment the version to trigger onUpgrade
+  version: 4, // Increment the version to trigger onUpgrade
   onCreate: (db, version) {
     // Create all tables in the initial setup
     db.execute('''
@@ -95,6 +101,17 @@ class DatabaseService {
       FOREIGN KEY ($_expenseUserIdColumnName) REFERENCES $_userTableName($_userIdColumnName)
     )
     ''');
+
+    db.execute('''
+    CREATE TABLE IF NOT EXISTS $_tasksTableName(
+      $_tasksIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT,
+      $_tasksUserIdColumnName INTEGER NOT NULL,
+      $_tasksCloumnName TEXT NOT NULL,
+      $_tasksDateColumnName TEXT NOT NULL,
+      FOREIGN KEY ($_tasksUserIdColumnName) REFERENCES $_userTableName($_userIdColumnName)
+      )
+    ''');
+
   },
 
 );
@@ -110,7 +127,7 @@ class DatabaseService {
 
     return database;
     
-  }
+}
 
 
   Future<void> checkTableInfo() async {
@@ -118,7 +135,7 @@ class DatabaseService {
   final budgetTableInfo = await db.rawQuery('PRAGMA table_info($_budgetTableName)');
   final expenseTableInfo = await db.rawQuery('PRAGMA table_info($_expenseTableName)');
   final version = await db.rawQuery('PRAGMA user_version');
-print('Database version: ${version.first['user_version']}');
+  print('Database version: ${version.first['user_version']}');
   print('Budget Table Info: $budgetTableInfo');
   print('Expense Table Info: $expenseTableInfo');
 }
@@ -345,6 +362,21 @@ Future<double> getTotalSpendingForCategory(int userId, String category) async {
 
 
 
+
+
+Future<void> addPlans(int userId, String tasks) async {
+  final db = await database;
+
+  await db.insert(
+    _expenseTableName,
+    {
+      'user_id': userId, // Pass the correct user ID here
+      'description': tasks,
+      'tdate': DateTime.now().toIso8601String(), // Storing current date
+    },
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
 
 
 }

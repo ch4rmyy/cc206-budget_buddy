@@ -1,4 +1,5 @@
 
+import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:cc206_budget_buddy/features/sample.dart';
@@ -9,6 +10,9 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
+
+  final DatabaseService _databaseService = DatabaseService.instance;
+
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
@@ -17,6 +21,9 @@ class _CalendarState extends State<Calendar> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+
+  String? _username;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -79,6 +86,35 @@ class _CalendarState extends State<Calendar> {
     }
   }
 
+  // Future<void> _fetchUserByEmail(String email, String password) async {
+  //   try{
+  //     final user = await _databaseService.getUserEmailAndPassword(email, password);
+  //     if (user != null){
+  //       setState(() {
+  //         _username = user['username'];
+  //         _isLoading = false;
+  //       });
+  //     }
+  //   }catch(e){
+  //     print("Error fetching user: $e");
+  //   }
+  // }
+
+  // Future<void> _fetchUserId() async {
+  //   if (_username != null){
+  //   int? userId = await _databaseService.getUserId(_username!);
+
+  //   if(userId != null){
+
+  //     print ("User ID: $userId.");
+  //   }else{
+  //     print("User not found");
+  //   }
+  //   }else{
+  //     print ("Username is null. Unable to fetch user ID");
+  //   }
+  // }
+
   void _addEventDialog(BuildContext context) {
   final TextEditingController _eventController = TextEditingController();
 
@@ -103,13 +139,29 @@ class _CalendarState extends State<Calendar> {
         ),
         TextButton(
           onPressed: () async {
-            // final db = DBHelper();
-            // final date = "${_selectedDay!.year}-${_selectedDay!.month}-${_selectedDay!.day}";
-            // await db.insertEvent(date, _eventController.text);
-    
-            // // Refresh the selected events
-            // _selectedEvents.value = await _getEventsForDay(_selectedDay!);
-            // Navigator.of(context).pop();
+            
+            if(_selectedDay != null && _eventController.text.isNotEmpty){
+              final userId = await _databaseService.getUserId(_username!);
+
+              if(userId != null) {
+                await DatabaseService.instance.addPlans(userId, _eventController.text);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Plan added successfully!')),
+                );
+              }else{
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('User not found.')),
+                );
+              }
+
+              _eventController.clear();
+              Navigator.of(context).pop();
+            }else{
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Please enter a valid plan.'))
+              );
+            }
           },
           child: const Text('Add'),
         ),
