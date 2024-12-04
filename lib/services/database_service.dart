@@ -2,6 +2,7 @@
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:intl/intl.dart';
 
 
 class DatabaseService {
@@ -211,14 +212,14 @@ Future<Map<String, dynamic>?> getUserEmailAndPassword(String email, String passw
 // Add a method to insert an expense
 Future<void> addExpense(int userId, double amount, String category) async {
   final db = await database;
-
+  print('Adding budget: userId=$userId, amount=$amount, category: $category');
   await db.insert(
     _expenseTableName,
     {
       'user_id': userId, // Pass the correct user ID here
       'amount': amount,
       'category': category,
-      'date': DateTime.now().toIso8601String(), // Storing current date
+      'date': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
     },
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
@@ -260,7 +261,7 @@ Future<void> addBudget(int userId,double bamount) async {
     {
       'user_id': userId, // Pass the correct user ID here
       'bamount': bamount,
-      'bdate': DateTime.now().toIso8601String(), // Storing current date
+      'bdate': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
     },
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
@@ -361,6 +362,51 @@ Future<void> addPlans(int userId, String tasks) async {
     conflictAlgorithm: ConflictAlgorithm.replace,
   );
 }
+
+Future<List<Map<String, dynamic>>> getTransactionHistory(int userId) async {
+  final db = await database;
+
+  // Query to fetch transactions for the specific user
+  final result = await db.rawQuery('''
+SELECT 
+  'Expense' AS type, 
+  IFNULL($_expenseAmountColumnName, 0) AS value, 
+  IFNULL($_expenseCategoryColumnName, 'Uncategorized') AS category, 
+  $_expenseDateColumnName AS date
+FROM $_expenseTableName
+WHERE $_expenseUserIdColumnName = ?
+UNION ALL
+SELECT 
+  'Budget' AS type, 
+  IFNULL($_budgetAmountColumnName, 0) AS value, 
+  'Budget' AS category, -- Default "Uncategorized" budgets to "Budget"
+  $_budgetDateColumnName AS date
+FROM $_budgetTableName
+WHERE $_budgetUserIdColumnName = ?
+ORDER BY date DESC
+
+  ''', [userId, userId]);
+
+  print('Fetched transactions: $result');
+  return result; // Return the combined transaction history
+}
+
+Future<int?> getUserIdFromEmailAndPassword(String email, String password) async {
+  final db = await database; // Access the database
+  final result = await db.query(
+    _userTableName, // Use your user table
+    columns: [_userIdColumnName], // Fetch only the ID column
+    where: '$_userEmailColumnName = ? AND $_userPassWordColumnName = ?', // Match email and password
+    whereArgs: [email, password], // Arguments for the placeholders
+    limit: 1, // Only fetch the first matching record
+  );
+
+  if (result.isNotEmpty) {
+    return result.first[_userIdColumnName] as int; // Return the ID if a match is found
+  }
+  return null; // Return null if no match is found
+}
+
 
 
 }

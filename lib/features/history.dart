@@ -1,41 +1,46 @@
+import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/material.dart';
-import 'package:very_good_infinite_list/very_good_infinite_list.dart';
 
 class History extends StatefulWidget {
+  final String email;
+  final String password;
+
+  const History({super.key, required this.email, required this.password});
+
   @override
   _HistoryState createState() => _HistoryState();
 }
 
 class _HistoryState extends State<History> {
-  var _items = <String>[];
-  // var _amount = <String>[];
-  var _isLoading = false;
+  var _isLoading = true;
+  List<Map<String, dynamic>> _transaction = [];
 
-void _fetchData() async {
-  setState(() {
-    _isLoading = true;
-  });
-
-  await Future.delayed(const Duration(seconds: 1)); // Simulate a loading delay
-
-  if (!mounted) return;
-
-  setState(() {
-    _isLoading = false;
-    _items.addAll([
-      'Food \$30.00',
-      'Transportation \$15.00',
-      'Boarding Fees \$50.00',
-      'School Fees \$40.00',
-      'Others \$20.00',
-    ]);
-  });
-    // setState(() {
-    //   _isLoading = false;
-    //   _items = List.generate(_items.length + 10, (i) => 'Category $i Amount');
-    // });
+   @override
+  void initState() {
+    super.initState();
+    _fetchTransactionHistory(); // Fetch the transaction history when the page is loaded
   }
 
+  // Fetch transaction history from the database
+  Future<void> _fetchTransactionHistory() async {
+    final dbService = DatabaseService.instance;
+    final userId = await dbService.getUserIdFromEmailAndPassword(widget.email, widget.password);
+
+    if (userId != null) {
+      final transactions = await dbService.getTransactionHistory(userId); // Fetch history using the userId
+      setState(() {
+        _transaction = transactions;
+        _isLoading = false; // Set loading to false once the data is fetched
+        print("Fetched transactions from database: $_transaction");
+
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+      print("User not found!");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,41 +50,48 @@ void _fetchData() async {
           backgroundColor: const Color.fromRGBO(40, 54, 24, 1),
           toolbarHeight: 100,
         ),
-        body: InfiniteList(
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          itemCount: _items.length,
-          isLoading: _isLoading,
-          onFetchData: _fetchData,
-          separatorBuilder: (context, index) => const Divider(),
-          itemBuilder: (context, index) {
-            return ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-              leading: const CircleAvatar(
-                backgroundColor: Color(0xFF606C38),
-                child: Icon(Icons.category, color: Color(0xFFFEFAE0),),
+        body:  _isLoading
+            ? const Center(child: CircularProgressIndicator()) // Show loading spinner while data is being fetched
+            : ListView.builder(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                itemCount: _transaction.length,
+                itemBuilder: (context, index) {
+                  var transaction = _transaction[index]; // Get the transaction data
+                  var date = transaction['date']; // Assuming 'date' is a field in the transaction
+                  var amount = transaction['value']  ?? 0.0; // Assuming 'amount' is a field in the transaction
+                  var category = transaction['category'] ?? 'Uncategorized'; // Assuming 'category' is a field in the transaction
+                  if (transaction['type'] == 'Budget' && category == 'Uncategorized') {
+                    category = 'Budget'; // Default to "Budget" for uncategorized budgets
+                  }
+                  print("Displaying: category=$category, amount=$amount");
+
+
+                  return ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                    leading: const CircleAvatar(
+                      backgroundColor: Color(0xFF606C38),
+                      child: Icon(Icons.category, color: Color(0xFFFEFAE0)),
+                    ),
+                    dense: true,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '$category: \$${amount.toStringAsFixed(2)}', // Display category and amount
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                        ),
+                        
+                      ],
+                      
+                    ),
+                    subtitle: Text(
+                      'Date: $date',
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  );
+                },
               ),
-              dense: true,
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(_items[index]  , style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
-                ],
-              ),
-              subtitle: Text('Date: 2024-11-${index + 20}',
-              style: const TextStyle(color: Colors.grey),
-              ),
-            );
-          },
-        ),
       ),
     );
   }
 }
-
-// /* SCSS RGB */
-// $cornsilk: rgba(254, 250, 224, 1) 0xFFFEFAE0;
-// $earth-yellow: rgba(221, 161, 94, 1);
-// $tigers-eye: rgba(188, 108, 37, 1);
-// $dark-moss-green: rgba(96, 108, 56, 1) 0xFF606C38;
-// $pakistan-green: rgba(40, 54, 24, 1) 0xFF283618;
-// $pakistan-green: rgba(40, 54, 24, 1) 0xFF283618;

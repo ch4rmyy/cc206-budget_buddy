@@ -13,16 +13,28 @@ class MainNavigator extends StatefulWidget {
 
 class _MainNavigatorState extends State<MainNavigator> {
   int currentpage = 0; // Tracks the currently selected page
+  late String email;
+  late String password;
 
-  // List of pages for navigation
-  final List<Widget> pages = [
-    const Homepage(),
-    Calendar(),
-    History(),
-  ];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Extract the arguments passed from the login screen
+    final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    email = args['email']!;
+    password = args['password']!;
+  }
 
   @override
   Widget build(BuildContext context) {
+    // Define the list of pages, passing the email and password to the necessary pages
+    final List<Widget> pages = [
+      Homepage(email: email, password: password), // Pass arguments to homepage
+      Calendar(), // No arguments needed for the calendar
+      History(email: email, password: password), // Pass to history
+    ];
+
+
     return Scaffold(
       drawer: const Maindrawer(),
       body: pages[currentpage], 
@@ -59,10 +71,4 @@ class _MainNavigatorState extends State<MainNavigator> {
       ),
     );
   }
-  // /* SCSS RGB */
-// $cornsilk: rgba(254, 250, 224, 1) 0xFFFEFAE0;
-// $earth-yellow: rgba(221, 161, 94, 1);
-// $tigers-eye: rgba(188, 108, 37, 1);
-// $dark-moss-green: rgba(96, 108, 56, 1);
-// $pakistan-green: rgba(40, 54, 24, 1) 0xFF283618;
 }

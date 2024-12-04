@@ -43,11 +43,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/login': (BuildContext ctx) => const LogInPage(),
-        '/homepage': (BuildContext ctx) => const Homepage(),
+        '/homepage': (BuildContext ctx) => const Homepage(email: '', password: '',),
         '/signup': (BuildContext ctx) => const SignUpPage(),
         '/nav': (BuildContext ctx) => const MainNavigator(),
         '/rec': (BuildContext ctx) => const Records(),
-        '/history': (BuildContext ctx) => History(),
+        '/history': (BuildContext ctx) => const History(email: '', password: '',),
         '/idprofile': (BuildContext ctx) => ProfileEditorScreen(),
         '/record': (BuildContext ctx) => const Records(),
         '/calendar': (BuildContext ctx) => Calendar(),

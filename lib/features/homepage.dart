@@ -1,15 +1,17 @@
 //import 'dart:ffi';
 
 import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
-import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
+//import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
 //import 'package:cc206_budget_buddy/features/log_in.dart';
 //import 'package:cc206_budget_buddy/features/calendar.dart';
-import 'package:cc206_budget_buddy/features/sign_up_page.dart';
+//import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
 class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+  final String email;
+  final String password;
+  const Homepage({super.key, required this.email, required this.password});
 
   @override
   _HomepageState createState() => _HomepageState();
@@ -39,25 +41,11 @@ class _HomepageState extends State<Homepage> {
     double othersSpending = 0.0;
 
 
-    // void didChangeDependencies() {
-      // super.didChangeDependencies();
-      // final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
-      // _fetchUsername(args['email']!, args['password']!);
-    // }
-
-    // @override
-  // void initState() {
-    // super.initState();
-    // _fetchUserIdAndCategorySpending();
-  // }
-
   @override
-    void didChangeDependencies() {
-      super.didChangeDependencies();
-      // Extract the arguments and initialize data
-      final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
-      initializeData(args['email']!, args['password']!);
-    }
+  void initState() {
+    super.initState();
+    initializeData(widget.email, widget.password); // Use constructor params directly
+  }
 
     Future<void> initializeData(String email, String password) async {
       await _fetchUsername(email, password); // Fetch the username first
@@ -106,8 +94,7 @@ class _HomepageState extends State<Homepage> {
 
   Future<void> _fetchUsername(String email, String password) async {
     try {
-      final user =
-            await _databaseService.getUserEmailAndPassword(email, password);
+      final user = await _databaseService.getUserEmailAndPassword(email, password);
         if (user != null) {
           setState(() {
             _username = user['username']; // Fetch username
@@ -152,12 +139,6 @@ class _HomepageState extends State<Homepage> {
       }
     }
 
-  // /* SCSS RGB */
-  // $cornsilk: rgba(254, 250, 224, 1) 0xFFFEFAE0;
-  // $earth-yellow: rgba(221, 161, 94, 1);
-  // $tigers-eye: rgba(188, 108, 37, 1);
-  // $dark-moss-green: rgba(96, 108, 56, 1);
-  // $pakistan-green: rgba(40, 54, 24, 1) 0xFF283618;
 
     @override
     Widget build(BuildContext context) {

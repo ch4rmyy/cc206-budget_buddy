@@ -1,7 +1,5 @@
-import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
 import 'package:cc206_budget_buddy/input/tabs/tab1.dart';
 import 'package:cc206_budget_buddy/input/tabs/tab2.dart';
-import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/material.dart';
 
@@ -82,7 +80,10 @@ Future<void> _addBudget() async {
       final double totalBudget = await _databaseService.getTotalBudget(_userId!);  // Assuming this method gets the total budget for the user
     await _databaseService.updateTotalBudget(_userId!, totalBudget);  // Update the total budget in the budget table
 
+    
+      Navigator.pop(context); // Go back to the homepage
       ScaffoldMessenger.of(context).showSnackBar(
+        
         const SnackBar(content: Text("Budget added successfully")),
       );
     } catch (e) {
