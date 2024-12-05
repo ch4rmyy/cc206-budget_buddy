@@ -1,11 +1,5 @@
-//import 'dart:ffi';
-
 import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
-//import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
-//import 'package:cc206_budget_buddy/features/log_in.dart';
-//import 'package:cc206_budget_buddy/features/calendar.dart';
-//import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:flutter/material.dart';
 
 class Homepage extends StatefulWidget {
@@ -52,6 +46,11 @@ class _HomepageState extends State<Homepage> {
       await _fetchUserIdAndCategorySpending(); // Then fetch spending
     }
 
+    Future<void> _refreshData() async {
+    await _fetchUserIdAndCategorySpending();
+    await _fetchTotals();
+  }
+
   Future<void> _fetchUserIdAndCategorySpending() async {
     print("Fetched userId: $_username"); // Debugging line
     final userId = await _databaseService.getUserId(_username); // Fetch the userId using the username
@@ -84,13 +83,6 @@ class _HomepageState extends State<Homepage> {
     setState(() {}); // Trigger rebuild when values are updated
   }
 
-    //@override
-
-  // Make sure to pass the userId here
-
-
-
-  // Fetch total expense and total budget for the user based on username
 
   Future<void> _fetchUsername(String email, String password) async {
     try {
@@ -507,15 +499,32 @@ class _HomepageState extends State<Homepage> {
         ),
   
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/record',
-                  arguments: {'username': _username});
-            },
-            backgroundColor: const Color(0xFF283618),
-            shape: const CircleBorder(),
-            child: const Icon(Icons.add,color: Color(0xFFFEFAE0)),
+        // floatingActionButton: FloatingActionButton(
+            // onPressed: () {
+              // Navigator.pushNamed(context, '/record',
+                  // arguments: {'username': _username});
+            // },
+            // backgroundColor: const Color(0xFF283618),
+            // shape: const CircleBorder(),
+            // child: const Icon(Icons.add,color: Color(0xFFFEFAE0)),
+            // ),
+
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context, 
+                  '/record', 
+                  arguments: {
+                    'username': _username,
+                    'onAddExpense': _refreshData, // Pass the callback here
+                  }
+                );
+              },
+              backgroundColor: const Color(0xFF283618),
+              shape: const CircleBorder(),
+              child: const Icon(Icons.add, color: Color(0xFFFEFAE0)),
             ),
+
            );
   }
 }

@@ -1,5 +1,7 @@
+import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
 import 'package:cc206_budget_buddy/input/tabs/tab1.dart';
 import 'package:cc206_budget_buddy/input/tabs/tab2.dart';
+import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/material.dart';
 
@@ -25,10 +27,9 @@ class _RecordsState extends State<Records> {
    @override
 void didChangeDependencies() {
   super.didChangeDependencies();
-  
   // Retrieve the username passed from the homepage
-  final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
-  final username = args['username']!;  // Get the username
+  final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+  final username = args['username'] as String;  // Get the username
 
   // Fetch the userId based on the username
   _fetchUserIdByUsername(username);
@@ -78,14 +79,10 @@ Future<void> _addBudget() async {
     try {
       await _databaseService.addBudget(_userId!, bamount);
       final double totalBudget = await _databaseService.getTotalBudget(_userId!);  // Assuming this method gets the total budget for the user
-      await _databaseService.updateTotalBudget(_userId!, totalBudget);  // Update the total budget in the budget table
+    await _databaseService.updateTotalBudget(_userId!, totalBudget);  // Update the total budget in the budget table
 
-    
-     
       ScaffoldMessenger.of(context).showSnackBar(
-        
         const SnackBar(content: Text("Budget added successfully")),
-        
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -138,6 +135,7 @@ Future<void> _submitDataExpense() async {
     await _databaseService.updateTotalExpense(_userId!, totalExpense);  // Update the total expense in the user table
     await _databaseService.printAllExpenses();
 
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Expense added successfully")),
     );
@@ -168,6 +166,21 @@ Future<void> _submitDataExpense() async {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Color(0xFFFEFAE0)),
+            onPressed: () {
+              // Get the callback from the arguments
+              final callback = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+              // If the callback exists, call the function
+              if (callback != null && callback['onAddExpense'] != null) {
+                callback['onAddExpense'](); // Trigger the refresh
+              }
+
+              // Pop the screen and go back to the previous page
+              Navigator.pop(context);
+            },
+          ),
           iconTheme: const IconThemeData(color: Color(0xFFFEFAE0)),
           title: const Text("Budget Log"),
           titleTextStyle: const TextStyle(
