@@ -130,65 +130,64 @@ Widget build(BuildContext context) {
   final sortedDates = groupedTransactions.keys.toList()
     ..sort((a, b) => b.compareTo(a));
 
-  return SafeArea(
-    child: Scaffold(
-      appBar: AppBar(
-        title: const Text('History', style: TextStyle(color: Color(0xFFFEFAE0))),
-        backgroundColor: const Color.fromRGBO(40, 54, 24, 1),
-        toolbarHeight: 100,
-      ),
-       drawer: const Maindrawer(),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-              itemCount: sortedDates.length,
-              itemBuilder: (context, index) {
-                var date = sortedDates[index]; // Get the date string (e.g., "2024-12-05")
-                var transactions = groupedTransactions[date]!; // Get transactions for this date
-
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Date Header
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text(
-                        DateFormat('MMM dd, yyyy').format(DateTime.parse(date)),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF606C38),
-                        ),
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('History', style: TextStyle(color: Color(0xFFFEFAE0))),
+      backgroundColor: const Color.fromRGBO(40, 54, 24, 1),
+      foregroundColor: const Color(0xFFFEFAE0),
+      toolbarHeight: 80,
+    ),
+     drawer: const Maindrawer(),
+    body: _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : ListView.builder(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+            itemCount: sortedDates.length,
+            itemBuilder: (context, index) {
+              var date = sortedDates[index]; // Get the date string (e.g., "2024-12-05")
+              var transactions = groupedTransactions[date]!; // Get transactions for this date
+  
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Date Header
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text(
+                      DateFormat('MMM dd, yyyy').format(DateTime.parse(date)),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF606C38),
                       ),
                     ),
-                    // Transactions for the date
-                    ...transactions.map((transaction) {
-                      var amount = transaction['value'] ?? 0.0;
-                      var category = transaction['category'] ?? 'Uncategorized';
-
-                      return ListTile(
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                        leading: const CircleAvatar(
-                          backgroundColor: Color(0xFF606C38),
-                          child: Icon(Icons.category, color: Color(0xFFFEFAE0)),
-                        ),
-                        dense: true,
-                        title: Text(
-                          '$category: \$${amount.toStringAsFixed(2)}',
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                        subtitle: Text(
-    'Time: ${DateFormat('hh:mm a').format(DateTime.parse(transaction['date']).toLocal())}', // Format the time as hh:mm AM/PM
-    style: const TextStyle(color: Colors.grey),
-  ),
-                      );
-                    })
-                  ],
-                );
-              },
-            ),
+                  ),
+                  // Transactions for the date
+                  ...transactions.map((transaction) {
+                    var amount = transaction['value'] ?? 0.0;
+                    var category = transaction['category'] ?? 'Uncategorized';
+  
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                      leading: const CircleAvatar(
+                        backgroundColor: Color(0xFF606C38),
+                        child: Icon(Icons.category, color: Color(0xFFFEFAE0)),
+                      ),
+                      dense: true,
+                      title: Text(
+                        '$category: \$${amount.toStringAsFixed(2)}',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
+                      subtitle: Text(
+  'Time: ${DateFormat('hh:mm a').format(DateTime.parse(transaction['date']).toLocal())}', // Format the time as hh:mm AM/PM
+  style: const TextStyle(color: Colors.grey),
     ),
+                    );
+                  }).toList(),
+                ],
+              );
+            },
+          ),
   );
 }
 
