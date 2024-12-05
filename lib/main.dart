@@ -6,6 +6,7 @@ import 'package:cc206_budget_buddy/drawers/ratings.dart';
 import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
+import 'package:cc206_budget_buddy/features/userprofile.dart';
 import 'package:cc206_budget_buddy/input/records.dart';
 import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
@@ -53,7 +54,8 @@ class MyApp extends StatelessWidget {
         '/calendar': (BuildContext ctx) => Calendar(),
         '/manageAcc': (BuildContext ctx) => ManageAccountPage(),
         '/aboutUs': (BuildContext ctx) => const AboutUsScreen(),
-        '/ratings': (BuildContext ctx) => const RatingScreen()
+        '/ratings': (BuildContext ctx) => const RatingScreen(),
+        '/userprofile': (BuildContext ctx) => UserProfilePage()
       },
     );
   }
