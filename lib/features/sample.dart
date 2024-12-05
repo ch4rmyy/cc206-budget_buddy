@@ -1,46 +1,58 @@
-import 'dart:collection';
+import 'package:cc206_budget_buddy/services/database_service.dart';
 
-import 'package:table_calendar/table_calendar.dart';
-
-/// Example event class.
 class Event {
-  final String title;
+  final int tid;
+  final DateTime date;
+  final String description;
 
-  const Event(this.title);
+  Event({required this.tid, required this.date, required this.description});
+
+  // Constructor to convert database row data to Event
+  factory Event.fromMap(Map<String, dynamic> map) {
+    return Event(
+      tid: map['tid'],
+      description: map['description'] ?? '', 
+      date: DateTime.parse(map['tdate']), 
+    );
+  }
 
   @override
-  String toString() => title;
+  String toString() => description;
 }
 
-/// Example events.
-///
-/// Using a LinkedHashMap is highly recommended if you decide to use a map.
-/// 
-final kEvents = LinkedHashMap<DateTime, List<Event>>(
-  equals: isSameDay,
-  hashCode: getHashCode,
-);
+class CalendarConnectors {
+  late DateTime today;
+  late DateTime firstDay;
+  late DateTime lastDay;
 
-void addEvent(DateTime date, Event event) {
-  if (kEvents[date] == null) {
-    kEvents[date] = [];
+  CalendarConnectors() {
+    today = DateTime.now();
+    firstDay = DateTime(today.year, today.month - 3, today.day);
+    lastDay = DateTime(today.year, today.month + 3, today.day);
   }
-  kEvents[date]!.add(event);
+
+  Future<List<Event>> getEventsForDate(DateTime selectedDate) async {
+    final DatabaseService _databaseService = DatabaseService.instance;
+
+    final formattedDate = selectedDate.toIso8601String().split('T')[0]; // Format to 'YYYY-MM-DD'
+
+    final db = await _databaseService.database;
+
+    try {
+      final result = await db.query(
+        'tasks',
+        where: 'tdate LIKE ?',
+        whereArgs: ['$formattedDate%'],
+      );
+
+      List<Event> events = result.map((event) => Event.fromMap(event)).toList();
+
+      return events;
+    } catch (e) {
+      print('Error retrieving events: $e');
+      return [];
+    }
+  }
 }
 
-int getHashCode(DateTime key) {
-  return key.day * 1000000 + key.month * 10000 + key.year;
-}
 
-/// Returns a list of [DateTime] objects from [first] to [last], inclusive.
-List<DateTime> daysInRange(DateTime first, DateTime last) {
-  final dayCount = last.difference(first).inDays + 1;
-  return List.generate(
-    dayCount,
-    (index) => DateTime.utc(first.year, first.month, first.day + index),
-  );
-}
-
-final kToday = DateTime.now();
-final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
-final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);

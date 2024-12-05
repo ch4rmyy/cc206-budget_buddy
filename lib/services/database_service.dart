@@ -1,5 +1,6 @@
 //opening and interacting to the database
 
+import 'package:cc206_budget_buddy/features/sample.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
@@ -33,7 +34,7 @@ class DatabaseService {
   final String _tasksTableName = "tasks";
   final String _tasksIdColumnName = "tid";
   final String _tasksUserIdColumnName = "user_id"; //Foreign Key
-  final String _tasksCloumnName = "description";
+  final String _tasksDescriptionColumnName = "description";
   final String _tasksDateColumnName = "tdate";
 
   
@@ -107,7 +108,7 @@ class DatabaseService {
     CREATE TABLE IF NOT EXISTS $_tasksTableName(
       $_tasksIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT,
       $_tasksUserIdColumnName INTEGER NOT NULL,
-      $_tasksCloumnName TEXT NOT NULL,
+      $_tasksDescriptionColumnName TEXT NOT NULL,
       $_tasksDateColumnName TEXT NOT NULL,
       FOREIGN KEY ($_tasksUserIdColumnName) REFERENCES $_userTableName($_userIdColumnName)
       )
@@ -120,9 +121,10 @@ class DatabaseService {
 
 
 
-
-
-
+  final tasks = await database.rawQuery('SELECT * FROM $_tasksTableName');
+  print ('TASKS: $tasks');
+  final tables = await database.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
+  print('Existing tables: $tables');
 
 
 
@@ -346,23 +348,6 @@ Future<double> getTotalSpendingForCategory(int userId, String category) async {
 }
 
 
-
-
-
-Future<void> addPlans(int userId, String tasks) async {
-  final db = await database;
-
-  await db.insert(
-    _expenseTableName,
-    {
-      'user_id': userId, // Pass the correct user ID here
-      'description': tasks,
-      'tdate': DateTime.now().toIso8601String(), // Storing current date
-    },
-    conflictAlgorithm: ConflictAlgorithm.replace,
-  );
-}
-
 Future<List<Map<String, dynamic>>> getTransactionHistory(int userId) async {
   final db = await database;
 
@@ -407,6 +392,53 @@ Future<int?> getUserIdFromEmailAndPassword(String email, String password) async 
   return null; // Return null if no match is found
 }
 
+Future<void> addPlans(int userId,String description, DateTime selectedDate) async {
+  final db = await database;
 
+  await db.insert(
+    _tasksTableName,
+    {
+      'user_id': userId, 
+      'description': description,
+      'tdate': DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate),
+    },
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+
+Future<void> deletePlan(int tid) async {
+    final db = await database;
+
+    try {
+      await db.delete(
+        _tasksTableName, 
+        where: '$_tasksIdColumnName = ?', 
+        whereArgs: [tid],
+      );
+      print('Task with ID $tid deleted successfully.');
+    } catch (e) {
+      print('Error deleting task: $e');
+    }
+  }
+
+    Future<Map<DateTime, List<Event>>> getAllEvents() async {
+    final db = await database;
+    final List<Map<String, dynamic>> eventMaps = await db.query(_tasksTableName);
+
+    Map<DateTime, List<Event>> eventsMap = {};
+
+    for (var eventMap in eventMaps) {
+      DateTime eventDate = DateTime.parse(eventMap[_tasksDateColumnName]);
+      Event event = Event.fromMap(eventMap);
+
+      if (eventsMap.containsKey(eventDate)) {
+        eventsMap[eventDate]!.add(event);
+      } else {
+        eventsMap[eventDate] = [event];
+      }
+    }
+
+    return eventsMap;
+  }
 
 }

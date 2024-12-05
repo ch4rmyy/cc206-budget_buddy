@@ -30,7 +30,7 @@ class _MainNavigatorState extends State<MainNavigator> {
     // Define the list of pages, passing the email and password to the necessary pages
     final List<Widget> pages = [
       Homepage(email: email, password: password), // Pass arguments to homepage
-      Calendar(), // No arguments needed for the calendar
+      Calendar(email: email, password: password), // No arguments needed for the calendar
       History(email: email, password: password), // Pass to history
     ];
 

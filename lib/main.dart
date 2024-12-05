@@ -28,7 +28,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -51,7 +50,7 @@ class MyApp extends StatelessWidget {
         '/history': (BuildContext ctx) => const History(email: '', password: '',),
         '/idprofile': (BuildContext ctx) => ProfileEditorScreen(),
         '/record': (BuildContext ctx) => const Records(),
-        '/calendar': (BuildContext ctx) => Calendar(),
+        '/calendar': (BuildContext ctx) => const Calendar(email: '', password: '',),
         '/manageAcc': (BuildContext ctx) => ManageAccountPage(),
         '/aboutUs': (BuildContext ctx) => const AboutUsScreen(),
         '/ratings': (BuildContext ctx) => const RatingScreen(),
