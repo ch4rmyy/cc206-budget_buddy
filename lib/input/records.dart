@@ -1,4 +1,3 @@
-import 'package:cc206_budget_buddy/drawers/main_drawer.dart';
 import 'package:cc206_budget_buddy/input/tabs/tab1.dart';
 import 'package:cc206_budget_buddy/input/tabs/tab2.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
@@ -196,36 +195,24 @@ class _RecordsState extends State<Records> {
             fontSize: 30,
           ),
           backgroundColor: const Color.fromRGBO(40, 54, 24, 1),
-          toolbarHeight: 140,
-          flexibleSpace: Container(
-              //hello user
-              padding: const EdgeInsets.fromLTRB(12, 5, 12, 60),
-              child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Row(children: [
-                      Text(
-                        "Hello <user>",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
-                      Spacer(),
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundImage: NetworkImage(
-                            'https://ilovelibraries.org/wp-content/uploads/2020/08/libartists-opengraph-768x403.png'),
-                      )
-                    ])
-                  ])),
-          bottom: const TabBar(
-            tabs: [
-              Tab(icon: Expenses()),
-              Tab(icon: Budget()),
-            ],
-            labelColor: Color.fromRGBO(254, 250, 224, 1),
-            unselectedLabelColor: Color.fromRGBO(174, 167, 121, 1),
-          ),
+          toolbarHeight: 100,
+          bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(50), 
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 0), 
+              
+              child: TabBar(
+                tabs: [
+                  Tab(icon: Expenses()),
+                  Tab(icon: Budget()),
+                ],
+                labelColor: Color.fromRGBO(254, 250, 224, 1),
+                unselectedLabelColor: Color.fromRGBO(174, 167, 121, 1),
+                ),
+              )
+          )
         ),
-        drawer: const Maindrawer(),
+        // drawer: const Maindrawer(),
         body: TabBarView(children: [
           SingleChildScrollView(
             child: Container(
