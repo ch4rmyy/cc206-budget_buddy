@@ -78,13 +78,14 @@ Future<void> _addBudget() async {
     try {
       await _databaseService.addBudget(_userId!, bamount);
       final double totalBudget = await _databaseService.getTotalBudget(_userId!);  // Assuming this method gets the total budget for the user
-    await _databaseService.updateTotalBudget(_userId!, totalBudget);  // Update the total budget in the budget table
+      await _databaseService.updateTotalBudget(_userId!, totalBudget);  // Update the total budget in the budget table
 
     
-      Navigator.pop(context); // Go back to the homepage
+     
       ScaffoldMessenger.of(context).showSnackBar(
         
         const SnackBar(content: Text("Budget added successfully")),
+        
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -136,7 +137,6 @@ Future<void> _submitDataExpense() async {
     final double totalExpense = await _databaseService.getTotalExpenses(_userId!);  // Assuming this method gets the total expense for the user
     await _databaseService.updateTotalExpense(_userId!, totalExpense);  // Update the total expense in the user table
     await _databaseService.printAllExpenses();
-
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Expense added successfully")),
