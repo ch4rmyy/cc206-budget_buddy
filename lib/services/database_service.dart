@@ -392,10 +392,11 @@ Future<int?> getUserIdFromEmailAndPassword(String email, String password) async 
   return null; // Return null if no match is found
 }
 
-Future<void> addPlans(int userId,String description, DateTime selectedDate) async {
+Future<int> addPlans(int userId,String description, DateTime selectedDate) async {
   final db = await database;
 
-  await db.insert(
+  try{
+    final tid = await db.insert(
     _tasksTableName,
     {
       'user_id': userId, 
@@ -403,42 +404,129 @@ Future<void> addPlans(int userId,String description, DateTime selectedDate) asyn
       'tdate': DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate),
     },
     conflictAlgorithm: ConflictAlgorithm.replace,
-  );
+    );
+    print('Plan addd with ID: $tid');
+
+    return tid;
+
+  }catch(e){
+    print('error adding plan: $e');
+    throw Exception('Error adding plan');
+  }
 }
 
 Future<void> deletePlan(int tid) async {
     final db = await database;
 
     try {
-      await db.delete(
+      final result = await db.delete(
         _tasksTableName, 
         where: '$_tasksIdColumnName = ?', 
         whereArgs: [tid],
       );
+
+      if(result > 0){
       print('Task with ID $tid deleted successfully.');
+      }else{
+        print('No task found with ID $tid to delete.');
+      }
+      
     } catch (e) {
       print('Error deleting task: $e');
     }
   }
 
-    Future<Map<DateTime, List<Event>>> getAllEvents() async {
-    final db = await database;
-    final List<Map<String, dynamic>> eventMaps = await db.query(_tasksTableName);
+  //   Future<Map<DateTime, List<Event>>> getAllEvents() async {
+  //   final db = await database;
+  //   final List<Map<String, dynamic>> eventMaps = await db.query(_tasksTableName);
 
-    Map<DateTime, List<Event>> eventsMap = {};
+  //   Map<DateTime, List<Event>> eventsMap = {};
 
-    for (var eventMap in eventMaps) {
-      DateTime eventDate = DateTime.parse(eventMap[_tasksDateColumnName]);
-      Event event = Event.fromMap(eventMap);
+  //   for (var eventMap in eventMaps) {
+  //     DateTime eventDate = DateTime.parse(eventMap[_tasksDateColumnName]);
+  //     Event event = Event.fromMap(eventMap);
 
-      if (eventsMap.containsKey(eventDate)) {
-        eventsMap[eventDate]!.add(event);
-      } else {
-        eventsMap[eventDate] = [event];
-      }
-    }
+  //     if (eventsMap.containsKey(eventDate)) {
+  //       eventsMap[eventDate]!.add(event);
+  //     } else {
+  //       eventsMap[eventDate] = [event];
+  //     }
+  //   }
 
-    return eventsMap;
+  //   return eventsMap;
+  // }
+
+  Future<List<Event>> getEventsForDate(DateTime selectedDate) async {
+  final db = await database; // Get the database instance
+
+  // Format the date to match the 'tdate' column format (YYYY-MM-DD)
+  final formattedDate = selectedDate.toIso8601String().split('T')[0];
+
+  try {
+    // Query the database for tasks matching the formatted date
+    final List<Map<String, dynamic>> result = await db.query(
+      'tasks',
+      where: 'tdate = ?', // Exact match for the date
+      whereArgs: [formattedDate],
+    );
+
+    // Convert the result into a list of Event objects
+    return result.map((task) => Event.fromMap(task)).toList();
+  } catch (e) {
+    print('Error fetching events for $formattedDate: $e');
+    return [];
   }
+}
+
+
+  Future<List<Event>> getAllTasks() async {
+  final db = await database;
+
+  try {
+    final result = await db.query(_tasksTableName);
+
+    // Convert the result into a list of Event objects
+    List<Event> tasks = result.map((task) {
+      return Event.fromMap(task);
+    }).toList();
+
+    return tasks;
+  } catch (e) {
+    print('Error retrieving tasks: $e');
+    return [];
+  }
+}
+
+
+  Future<void> printAllTasks() async {
+  final db = await database;
+
+  try {
+    // Query all rows in the tasks table
+    List<Map<String, dynamic>> tasks = await db.query(_tasksTableName);
+
+    // Print each task to the debug console
+    for (var task in tasks) {
+      print('Task ID: ${task[_tasksIdColumnName]}, Description: ${task[_tasksDescriptionColumnName]}, Date: ${task[_tasksDateColumnName]}');
+    }
+  } catch (e) {
+    print('Error retrieving tasks: $e');
+  }
+}
+
+Future<void> deleteAllTasks() async {
+  final db = await database;
+
+  try {
+    // Delete all tasks from the tasks table
+    await db.delete(_tasksTableName);
+
+    print('All tasks deleted successfully.');
+  } catch (e) {
+    print('Error deleting all tasks: $e');
+  }
+}
+
+
 
 }

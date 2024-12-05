@@ -1,14 +1,14 @@
-import 'package:cc206_budget_buddy/drawers/aboutus.dart';
-import 'package:cc206_budget_buddy/drawers/editProfile.dart';
-import 'package:cc206_budget_buddy/drawers/manageAccount.dart';
+import 'package:cc206_budget_buddy/drawers/about_us.dart';
+import 'package:cc206_budget_buddy/drawers/edit_profile.dart';
+import 'package:cc206_budget_buddy/drawers/manage_account.dart';
 import 'package:cc206_budget_buddy/features/calendar.dart';
 import 'package:cc206_budget_buddy/drawers/ratings.dart';
 import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
-import 'package:cc206_budget_buddy/features/userprofile.dart';
+import 'package:cc206_budget_buddy/features/user_profile.dart';
 import 'package:cc206_budget_buddy/input/records.dart';
-import 'package:cc206_budget_buddy/navigation/mainnavigation.dart';
+import 'package:cc206_budget_buddy/navigation/main_navigation.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cc206_budget_buddy/features/log_in.dart';
@@ -48,13 +48,13 @@ class MyApp extends StatelessWidget {
         '/nav': (BuildContext ctx) => const MainNavigator(),
         '/rec': (BuildContext ctx) => const Records(),
         '/history': (BuildContext ctx) => const History(email: '', password: '',),
-        '/idprofile': (BuildContext ctx) => ProfileEditorScreen(),
+        '/idprofile': (BuildContext ctx) => const ProfileEditorScreen(),
         '/record': (BuildContext ctx) => const Records(),
         '/calendar': (BuildContext ctx) => const Calendar(email: '', password: '',),
         '/manageAcc': (BuildContext ctx) => ManageAccountPage(),
         '/aboutUs': (BuildContext ctx) => const AboutUsScreen(),
         '/ratings': (BuildContext ctx) => const RatingScreen(),
-        '/userprofile': (BuildContext ctx) => UserProfilePage()
+        '/userprofile': (BuildContext ctx) => const UserProfilePage()
       },
     );
   }

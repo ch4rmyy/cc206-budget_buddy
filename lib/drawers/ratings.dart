@@ -33,7 +33,7 @@ class _RatingScreenState extends State<RatingScreen> {
       backgroundColor: const Color(0xFFFEFAE0),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(96, 108, 56, 1),
-        foregroundColor: Color(0xFFFEFAE0),
+        foregroundColor: const Color(0xFFFEFAE0),
         toolbarHeight: 70,
         title: const Text("Rate Budget Buddy",
         style: TextStyle(fontWeight: FontWeight.w600),

@@ -1,4 +1,4 @@
-import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
+import 'package:cc206_budget_buddy/drawers/main_drawer.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -183,7 +183,7 @@ Widget build(BuildContext context) {
     style: const TextStyle(color: Colors.grey),
   ),
                       );
-                    }).toList(),
+                    })
                   ],
                 );
               },

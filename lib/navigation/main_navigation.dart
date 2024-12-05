@@ -1,4 +1,4 @@
-import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
+import 'package:cc206_budget_buddy/drawers/main_drawer.dart';
 import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/calendar.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';

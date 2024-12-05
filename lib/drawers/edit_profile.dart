@@ -1,11 +1,14 @@
+
 import 'package:flutter/material.dart';
 
 class ProfileEditorScreen extends StatefulWidget {
+  const ProfileEditorScreen({super.key});
+
   @override
-  _ProfileEditorScreenState createState() => _ProfileEditorScreenState();
+  ProfileEditorScreenState createState() => ProfileEditorScreenState();
 }
 
-class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
+class ProfileEditorScreenState extends State<ProfileEditorScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -21,8 +24,8 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
-        backgroundColor: Color(0xFF606C38),
-        foregroundColor: Color(0xFFFEFAE0),
+        backgroundColor: const Color(0xFF606C38),
+        foregroundColor: const Color(0xFFFEFAE0),
         toolbarHeight: 70,
         leading: 
           IconButton(
@@ -35,10 +38,10 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
           // Matches the dark green theme
       ),
       body: Container(
-        color: Color(0xFFFEFAE0),
+        color: const Color(0xFFFEFAE0),
         child: Center(
           child: Card(
-            color: Color(0xFFFEFAE0), // Main card background color
+            color: const Color(0xFFFEFAE0), // Main card background color
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -155,7 +158,7 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
                               borderSide: BorderSide(color: Color(0xFF283618)),
                             ),
                           ),
-                          style: TextStyle(color: Color(0xFF283618)),
+                          style: const TextStyle(color: Color(0xFF283618)),
                         ),
                         const SizedBox(height: 20),
                         // Birthdate
@@ -226,7 +229,7 @@ class _ProfileEditorScreenState extends State<ProfileEditorScreen> {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  Color.fromRGBO(227, 135, 55, 1), // Light button color
+                                  const Color.fromRGBO(227, 135, 55, 1), // Light button color
                               foregroundColor: const Color(0xFFFEFAE0), // Text color
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),

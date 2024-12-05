@@ -1,4 +1,4 @@
-import 'package:cc206_budget_buddy/drawers/maindrawer.dart';
+import 'package:cc206_budget_buddy/drawers/main_drawer.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/material.dart';
 
@@ -8,10 +8,10 @@ class Homepage extends StatefulWidget {
   const Homepage({super.key, required this.email, required this.password});
 
   @override
-  _HomepageState createState() => _HomepageState();
+  HomepageState createState() => HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class HomepageState extends State<Homepage> {
     // Declare a variable here to manage the state
 
     final DatabaseService _databaseService = DatabaseService.instance;
@@ -87,6 +87,7 @@ class _HomepageState extends State<Homepage> {
   Future<void> _fetchUsername(String email, String password) async {
     try {
       final user = await _databaseService.getUserEmailAndPassword(email, password);
+      if (mounted){
         if (user != null) {
           setState(() {
             _username = user['username']; // Fetch username
@@ -101,6 +102,7 @@ class _HomepageState extends State<Homepage> {
             const SnackBar(content: Text("Error: User not found.")),
           );
         }
+      }
     } catch (e) {
         setState(() {
           _isLoading = false;
