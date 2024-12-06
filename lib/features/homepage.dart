@@ -252,15 +252,7 @@ class HomepageState extends State<Homepage> {
                         ),
                       ),
                     
-              
-              
-          
-          
-          
-          
-          
-          
-                      const SizedBox(width: 20), // Optional spacing between columns
+                 const SizedBox(width: 20), // Optional spacing between columns
           
                       Container(
                         width: 160,
@@ -355,8 +347,8 @@ class HomepageState extends State<Homepage> {
                             boxShadow: [
                               BoxShadow(
                               color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
-                                spreadRadius: 2, // How much the shadow spreads
-                                blurRadius: 8, // Softness of the shadow
+                                spreadRadius: 1, // How much the shadow spreads
+                                blurRadius: 5, // Softness of the shadow
                                 offset: const Offset(0, 4), // Horizontal and vertical offset
                               ),
                             ], // Default color for the lower part // Default color for the lower part
@@ -385,6 +377,14 @@ class HomepageState extends State<Homepage> {
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                           ),
+                            boxShadow: [
+                              BoxShadow(
+                              color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
+                                spreadRadius: 1, // How much the shadow spreads
+                                blurRadius: 5, // Softness of the shadow
+                                offset: const Offset(0, 4), // Horizontal and vertical offset
+                              ),
+                            ], // Default color for the lower part // Default color for the lower part                          
                         ),
                           child: ListTile(
                             leading: const Icon(Icons.car_crash, color: Color(0xFFFEFAE0),),
@@ -409,6 +409,14 @@ class HomepageState extends State<Homepage> {
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                           ),
+                            boxShadow: [
+                              BoxShadow(
+                              color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
+                                spreadRadius: 1, // How much the shadow spreads
+                                blurRadius: 5, // Softness of the shadow
+                                offset: const Offset(0, 4), // Horizontal and vertical offset
+                              ),
+                            ], // Default color for the lower part // Default color for the lower part                          
                         ),
                           child: ListTile(
                             leading: const Icon(Icons.school, color: Color(0xFFFEFAE0),),
@@ -433,6 +441,14 @@ class HomepageState extends State<Homepage> {
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                           ),
+                            boxShadow: [
+                              BoxShadow(
+                              color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
+                                spreadRadius: 1, // How much the shadow spreads
+                                blurRadius: 5, // Softness of the shadow
+                                offset: const Offset(0, 4), // Horizontal and vertical offset
+                              ),
+                            ], // Default color for the lower part // Default color for the lower part                          
                         ),
                           child: ListTile(
                             leading: const Icon(Icons.star, color: Color(0xFFFEFAE0),),
@@ -457,6 +473,14 @@ class HomepageState extends State<Homepage> {
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                           ),
+                            boxShadow: [
+                              BoxShadow(
+                              color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
+                                spreadRadius: 1, // How much the shadow spreads
+                                blurRadius: 5, // Softness of the shadow
+                                offset: const Offset(0, 4), // Horizontal and vertical offset
+                              ),
+                            ], // Default color for the lower part // Default color for the lower part                          
                         ),
                           child:ListTile(
                             leading: const Icon(Icons.house, color: Color(0xFFFEFAE0),),
@@ -481,6 +505,14 @@ class HomepageState extends State<Homepage> {
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                           ),
+                            boxShadow: [
+                              BoxShadow(
+                              color: const Color.fromARGB(255, 189, 186, 165).withOpacity(1.0), // Shadow color with opacity
+                                spreadRadius: 1, // How much the shadow spreads
+                                blurRadius: 5, // Softness of the shadow
+                                offset: const Offset(0, 4), // Horizontal and vertical offset
+                              ),
+                            ], // Default color for the lower part // Default color for the lower part                          
                         ),// Default color for the lower part // Default color for the lower part
                           child: ListTile(
                             leading: const Icon(Icons.category, color: Color(0xFFFEFAE0),),

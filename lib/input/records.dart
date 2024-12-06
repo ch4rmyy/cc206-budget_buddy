@@ -95,7 +95,7 @@ class _RecordsState extends State<Records> {
       }
     } else {
 
-        showPopUpDialog(context, 'Error', 'Please enter a valid amount.');
+        showPopUpDialog(context, '!', 'Please enter a valid amount.');
     }
   }
 
