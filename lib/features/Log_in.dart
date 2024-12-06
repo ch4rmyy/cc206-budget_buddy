@@ -28,7 +28,7 @@ class _LogInPageState extends State<LogInPage> {
 
   String? _validatePassword(String? password) {
     if (password == null || password.length < 6) {
-      return 'Password should be at least 6 characters';
+      return 'Incorrect password';
     }
     return null;
   }
@@ -53,17 +53,38 @@ class _LogInPageState extends State<LogInPage> {
           arguments: {'email': email, 'password': password,}, // Pass the username to the homepage
         );
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Error: No user found")),
-          );
+        showPopUpDialog(context, '!', 'No user found');
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("An error occurred. Please try again.")),
-        );
+        if(mounted){
+        showPopUpDialog(context, '!', 'An error occured, please try again later.');
+        }
       }
     }
   }
+
+  void showPopUpDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, //prevent closing when user tap outside
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          title: Center(child: Text(title, style: const TextStyle(fontWeight: FontWeight.w600),)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text(message, style: TextStyle(fontSize: 18),)],
+          ),
+      ));
+      
+    Future.delayed(const Duration(seconds: 2)).then((_){
+        if(mounted && Navigator.canPop(context)){
+          Navigator.of(context).pop();
+        }
+    });
+    
+  }
+
 
   Future<void> _popup() async {
     showDialog(
@@ -73,12 +94,12 @@ class _LogInPageState extends State<LogInPage> {
         return AlertDialog(
           contentPadding: EdgeInsets.zero,
           content: Container(
-            width: 75,
-            height: 300,
+            width: 40,
+            height: 250,
             decoration: BoxDecoration(
-              color: const Color(0xFFFEFAE0),
+              color: const Color.fromARGB(184, 254, 250, 224),
               border: Border.all(
-                color: const Color(0xFF283618),
+                color: const Color.fromARGB(184, 40, 54, 24),
                 width: 5,
               ),
               borderRadius: BorderRadius.circular(20),
@@ -88,7 +109,7 @@ class _LogInPageState extends State<LogInPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(Icons.check_circle, color: Color.fromRGBO(96, 108, 56, 1), size: 150),
+                  Icon(Icons.check_circle, color: Color.fromRGBO(96, 108, 56, 1), size: 100),
                   SizedBox(height: 20),
                   Text("Log In Successfully",
                       style:
