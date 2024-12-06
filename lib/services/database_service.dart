@@ -210,6 +210,26 @@ Future<Map<String, dynamic>?> getUserEmailAndPassword(String email, String passw
   return null; // No match found
 }
 
+Future<bool> verifyCurrentPassword(String email, String currentPassword) async {
+  final db = await database;
+
+  // Query the user table to get the stored password for the given email
+  final result = await db.query(
+    _userTableName,
+    where: '$_userEmailColumnName = ?',
+    whereArgs: [email],
+  );
+
+  if (result.isNotEmpty) {
+    // Compare the current password with the stored password
+    final storedPassword = result.first[_userPassWordColumnName] as String;
+    return storedPassword == currentPassword; // Returns true if passwords match
+  }
+
+  return false; // Return false if no user found or passwords do not match
+}
+
+
 
 // Add a method to insert an expense
 Future<void> addExpense(int userId, double amount, String category) async {
@@ -435,26 +455,6 @@ Future<void> deletePlan(int tid) async {
       print('Error deleting task: $e');
     }
   }
-
-  //   Future<Map<DateTime, List<Event>>> getAllEvents() async {
-  //   final db = await database;
-  //   final List<Map<String, dynamic>> eventMaps = await db.query(_tasksTableName);
-
-  //   Map<DateTime, List<Event>> eventsMap = {};
-
-  //   for (var eventMap in eventMaps) {
-  //     DateTime eventDate = DateTime.parse(eventMap[_tasksDateColumnName]);
-  //     Event event = Event.fromMap(eventMap);
-
-  //     if (eventsMap.containsKey(eventDate)) {
-  //       eventsMap[eventDate]!.add(event);
-  //     } else {
-  //       eventsMap[eventDate] = [event];
-  //     }
-  //   }
-
-  //   return eventsMap;
-  // }
 
   Future<List<Event>> getEventsForDate(DateTime selectedDate) async {
   final db = await database; // Get the database instance

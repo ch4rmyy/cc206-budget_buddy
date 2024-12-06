@@ -1,6 +1,86 @@
 import 'package:flutter/material.dart';
 
-class ManageAccountPage extends StatelessWidget {
+class ManageAccountPage extends StatefulWidget {
+  const ManageAccountPage({super.key});
+
+
+  @override
+  _ManageAccountPageState createState() => _ManageAccountPageState();
+}
+
+  class _ManageAccountPageState extends State<ManageAccountPage>{
+  final _currentPasswordController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Dispose the controllers when the widget is disposed
+    _currentPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _changePassword(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Change Password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _currentPasswordController,
+                obscureText: true,
+                decoration: const InputDecoration(labelText: 'Current Password'),
+              ),
+              TextField(
+                controller: _newPasswordController,
+                obscureText: true,
+                decoration: const InputDecoration(labelText: 'New Password'),
+              ),
+              TextField(
+                controller: _confirmPasswordController,
+                obscureText: true,
+                decoration: const InputDecoration(labelText: 'Confirm New Password'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                //String currentPassword = _currentPasswordController.text;
+                String newPassword = _newPasswordController.text;
+                String confirmPassword = _confirmPasswordController.text;
+
+                if (newPassword != confirmPassword) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Passwords do not match')));
+                } else {
+                  // Add your actual password update logic here (API call, etc.)
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Password changed successfully')));
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text('Change Password'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,29 +123,21 @@ class ManageAccountPage extends StatelessWidget {
                       context,
                       Icons.lock,
                       'Change Password',
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChangePasswordPage()),
-                      ),
+                      () {_changePassword(context);}
                     ),
                     const SizedBox(height: 20),
                     _buildClickableOption(
                       context,
                       Icons.email,
                       'Change Email',
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChangeEmailPage()),
-                      ),
+                      () {_changeEmail(context);}
                     ),
                     const SizedBox(height: 20),
                     _buildClickableOption(
                       context,
                       Icons.logout,
                       'Log Out',
-                      () => _handleLogout(context),
+                      () {_handleLogout(context);}
                     ),
                   ],
                 ),
@@ -118,65 +190,91 @@ class ManageAccountPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Log Out', style: TextStyle(fontWeight: FontWeight.bold),),
-        content: const Text('Are you sure you want to log out?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+        title: Image.asset('assets/images/pig6.png', width: 150,),
+        content: const Text(
+          'Are you sure you want to log out?', 
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Perform logout logic here
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Logged out successfully!')),
-              );
-            },
-            child: const Text('Log Out'),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+              ),
+
+              TextButton(
+                onPressed: () {
+                Navigator.pushNamed(context, '/homepage');
+                // Perform logout logic here
+                showPopUpDialog(context, 'Successfully', 'Loged out');
+                },
+                child: const Text('Log out', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+              ),
+            ],
           ),
         ],
-      ),
+      )
     );
   }
-}
 
-class ChangePasswordPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Change Password'),
-        backgroundColor: const Color.fromRGBO(96, 108, 56, 1),
-        foregroundColor: Color(0xFFFEFAE0),
-        toolbarHeight: 70,
-      ),
-      body: const Center(
-        child: Text(
-          'Change Password Screen',
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
+
+  
+    void _changeEmail(BuildContext context) {
+    // Show confirmation dialog
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Image.asset('assets/images/pig6.png', width: 150,),
+        content: const Text(
+          'Are you sure you want to log out?', 
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16),
+          ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+              ),
+
+              TextButton(
+                onPressed: () {
+                Navigator.pushNamed(context, '/homepage');
+                // Perform logout logic here
+                showPopUpDialog(context, 'Successfully', 'Loged out');
+                },
+                child: const Text('Log out', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+              ),
+            ],
+          ),
+        ],
+      )
     );
   }
-}
 
-class ChangeEmailPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Change Email'),
-        backgroundColor: const Color.fromRGBO(96, 108, 56, 1),
-        foregroundColor: Color(0xFFFEFAE0),
-        toolbarHeight: 70,
-      ),
-      body: const Center(
-        child: Text(
-          'Change Email Screen',
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
-    );
+  void showPopUpDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, //prevent closing when user tap outside
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          title: Center(child: Text(title, style: const TextStyle(fontWeight: FontWeight.w600),)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text(message, style: const TextStyle(fontSize: 20),)],
+          ),
+      ));
+      
+    Future.delayed(const Duration(seconds: 2)).then((_){
+        if(Navigator.canPop(context)){
+          Navigator.of(context).pop();
+        }
+    });
   }
 }

@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
         '/idprofile': (BuildContext ctx) => const ProfileEditorScreen(),
         '/record': (BuildContext ctx) => const Records(),
         '/calendar': (BuildContext ctx) => const Calendar(email: '', password: '',),
-        '/manageAcc': (BuildContext ctx) => ManageAccountPage(),
+        '/manageAcc': (BuildContext ctx) => const ManageAccountPage(),
         '/aboutUs': (BuildContext ctx) => const AboutUsScreen(),
         '/ratings': (BuildContext ctx) => const RatingScreen(),
         '/userprofile': (BuildContext ctx) => const UserProfilePage()

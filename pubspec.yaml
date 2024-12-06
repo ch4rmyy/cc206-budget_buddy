@@ -33,6 +33,8 @@ flutter:
     - assets/
     - assets/images/icon.png
     - assets/images/pig8.png
+    - assets/images/pig6.png
+
 
 flutter_launcher_icons:
   android: "launcher_icon"
