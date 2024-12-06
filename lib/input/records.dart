@@ -53,9 +53,9 @@ class _RecordsState extends State<Records> {
           // Assuming 'id' is the userId field
           // Now we have the userId, you can call addBudget function // Pass userId to addBudget
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Error: User not found")),
-          );
+          if(mounted){
+          showPopUpDialog(context, 'Error', 'Username not found.');
+          }
         }
       }
     } catch (e) {
@@ -85,38 +85,32 @@ class _RecordsState extends State<Records> {
             _userId!); // Assuming this method gets the total budget for the user
         await _databaseService.updateTotalBudget(_userId!,
             totalBudget); // Update the total budget in the budget table
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Budget added successfully")),
-          );
-        }
+
+        showPopUpDialog(context, 'Confirmation', 'Budget added successfully.');
+        _budgetController.clear();
+        
       } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Error adding budget")),
-          );
+        showPopUpDialog(context, '!', 'Error adding budget');
           print("Error adding budget: $e");
-        }
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please enter a valid amount")),
-      );
+
+        showPopUpDialog(context, 'Error', 'Please enter a valid amount.');
     }
   }
 
   Future<void> _submitDataExpense() async {
     if (_userId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Error: User not loaded yet")),
+        const SnackBar(content: Text("Error: User not loaded yet", selectionColor: Colors.red,)),
       );
       return;
     }
 
     if (selectedCategory == null || selectedCategory!.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please select a category")),
-      );
+        if(mounted){
+        showPopUpDialog(context, '!', 'Please select a category first.');
+        }
       return;
     }
 
@@ -124,15 +118,16 @@ class _RecordsState extends State<Records> {
     try {
       mount = double.parse(_expenseController.text.trim());
       if (mount <= 0) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Amount must be greater than zero")),
-        );
+        if(mounted){
+        showPopUpDialog(context, '!', 'Amount must be greater than 0.');
+        }
+        _budgetController.clear();
         return;
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please enter a valid amount")),
-      );
+        if(mounted){
+        showPopUpDialog(context, '!', 'Please enter a valid amount.');
+        }
       return;
     }
 
@@ -145,10 +140,8 @@ class _RecordsState extends State<Records> {
           _userId!, totalExpense); // Update the total expense in the user table
       await _databaseService.printAllExpenses();
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Expense added successfully")),
-        );
+      if(mounted){
+        showPopUpDialog(context, 'Confirmation', 'Expense added successfully.');
       }
 
       // Clear inputs after successful submission
@@ -157,13 +150,34 @@ class _RecordsState extends State<Records> {
         selectedCategory = null; // Reset category
       });
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Error adding expense")),
-        );
+        if(mounted){
+        showPopUpDialog(context, '!', 'Error adding expense.');
+        }
+        _budgetController.clear();
         print("Error adding expense: $e");
-      }
     }
+  }
+
+  void showPopUpDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, //prevent closing when user tap outside
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          title: Center(child: Text(title, style: const TextStyle(fontWeight: FontWeight.w600),)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text(message, style: TextStyle(fontSize: 18),)],
+          ),
+      ));
+      
+    Future.delayed(const Duration(seconds: 2)).then((_){
+        if(mounted && Navigator.canPop(context)){
+          Navigator.of(context).pop();
+        }
+    });
+    
   }
 
   @override
@@ -410,22 +424,17 @@ class _RecordsState extends State<Records> {
                           try {
                             await _addBudget(); // Directly call _addBudget() since it now internally uses _userId
                           } catch (e) {
-                            if (mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content:
-                                        Text("Error: Could not add budget")),
-                              );
+                            if (mounted) {                             
+                              showPopUpDialog(context, '!', 'Sorry, you cannot add budget.');
                             }
                               print("Error in button press: $e");
                           }
                         } else {
                           if(mounted){
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Please enter a valid amount")),
-                          );
+                          showPopUpDialog(context, '!', 'Please enter a valiid amount.');
+                          
                           }
+                          _budgetController.clear();
                         }
                       },
                       style: ElevatedButton.styleFrom(
