@@ -111,7 +111,7 @@ class _LogInPageState extends State<LogInPage> {
                 children: [
                   Icon(Icons.check_circle, color: Color.fromRGBO(96, 108, 56, 1), size: 100),
                   SizedBox(height: 20),
-                  Text("Log In Successfully",
+                  Text("Log In Successfull!",
                       style:
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
                 ],
@@ -167,6 +167,12 @@ class _LogInPageState extends State<LogInPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                                Icon(Icons.email,
+                                color: Colors.brown[800],
+                                size: 25,
+                              ),
+                              const SizedBox(width: 10,),
+
                               Container(
                                 margin: const EdgeInsets.symmetric(vertical: 10),
                                 height: 50,
@@ -192,26 +198,37 @@ class _LogInPageState extends State<LogInPage> {
                         ],
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      height: 50,
-                      width: 250,
-                      child: TextFormField(
-                        obscureText: _obscureText,
-                        controller: _passwordController,
-                        validator: _validatePassword,
-                        cursorHeight: 15,
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: const Color.fromRGBO(238, 235, 212, 1),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                            labelText: 'Password',
-                            labelStyle: const TextStyle(fontSize: 12,)
-                            ),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.lock,
+                          color: Colors.brown[800],
+                          size: 25,
+                        ),
+                        const SizedBox(width: 10,),
+
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          height: 50,
+                          width: 250,
+                          child: TextFormField(
+                            obscureText: _obscureText,
+                            controller: _passwordController,
+                            validator: _validatePassword,
+                            cursorHeight: 15,
+                            decoration: InputDecoration(
+                                filled: true,
+                                fillColor: const Color.fromRGBO(238, 235, 212, 1),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                labelText: 'Password',
+                                labelStyle: const TextStyle(fontSize: 12,)
+                                ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 5),
                     RichText(

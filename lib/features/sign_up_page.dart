@@ -16,7 +16,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  //List<Map<String, String>> budgetBuddyUsers = [];
   final bool _obscureText = true;
 
   final DatabaseService _databaseService = DatabaseService.instance;
@@ -50,95 +49,103 @@ class _SignUpPageState extends State<SignUpPage> {
     return null;
   }
   
-void _submitForm() async {
-  if (_fKey.currentState!.validate()) {
-    // Save data to SQLite
-    bool isDuplicate = await _databaseService.checkUserExists(_usernameController.text, _emailController.text);
+  void _submitForm() async {
+    if (_fKey.currentState!.validate()) {
+      bool isDuplicate = await _databaseService.checkUserExists(_usernameController.text, _emailController.text);
 
-    if(isDuplicate){
-      showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Try Again", textAlign: TextAlign.center,),
-                  content: const Text(
-                    "The email or username is already in use. Please try again with different data.",
-                  ),
-                  actions: [
-                    TextButton(
+      if(isDuplicate){
+        if(mounted){
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Try Again", 
+                  textAlign: TextAlign.center, 
+                  style: TextStyle(
+                    fontSize: 22, 
+                    fontWeight: FontWeight.bold)),
+                content: const Text(
+                  "The email or username is already exists.",
+                    textAlign: TextAlign.center,
+                ),
+                actions: [
+                  Center(
+                    child: TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text("OK"),
-                    ),
-                  ],
-                );
-              },
-            );
-    }else{
-      try {
-        await _databaseService.addUser(
-          _emailController.text.trim(),
-          _usernameController.text.trim(),
-          _passwordController.text.trim(),
-        );
-  
-        _usernameController.clear();
-        _emailController.clear();
-        _passwordController.clear();
-  
-        //print sa console
-        await _databaseService.printAllUsers();
-  
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              contentPadding: EdgeInsets.zero,
-              content: Container(
-                width: 75,
-                height: 300,
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(254, 250, 224, 100),
-                  border: Border.all(
-                    color: const Color.fromRGBO(96, 108, 56, 100),
-                    width: 5,
+                            child: const Text("OK", style: TextStyle(fontSize: 16),),
+                      ),
                   ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Sign up successful!',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ],
+              );
+            },
+          );
+        }
+      }else{
+        try {
+          await _databaseService.addUser(
+            _emailController.text.trim(),
+            _usernameController.text.trim(),
+            _passwordController.text.trim(),
+          );
+    
+          _usernameController.clear();
+          _emailController.clear();
+          _passwordController.clear();
+    
+          //print sa console
+          await _databaseService.printAllUsers();
+    
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                contentPadding: EdgeInsets.zero,
+                content: Container(
+                  width: 40,
+                  height: 250,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(184, 254, 250, 224),
+                    border: Border.all(
+                    color: const Color.fromARGB(184, 40, 54, 24),
+                      width: 5,
                     ),
-                    Icon(
-                      Icons.check_circle,
-                      color: Color.fromARGB(255, 32, 216, 38),
-                      size: 150,
-                    ),
-                    SizedBox(height: 20),
-                  ],
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                       Icon(
+                        Icons.check_circle,
+                        color: Color.fromRGBO(96, 108, 56, 1),
+                        size: 100,
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'Sign up successful!',
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
-        );
-  
-        // Navigate to the Login after delay
-        Future.delayed(const Duration(seconds: 2), () {
-          if (!mounted) return;
-          Navigator.of(context).pop();
-          Navigator.pushNamed(context, '/login');
-        });
-      } catch (e) {
-        // Handle database error
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving data: $e')),
-        );
+              );
+            },
+          );
+    
+          // Navigate to the Login after delay
+          Future.delayed(const Duration(seconds: 2), () {
+            if (!mounted) return;
+            Navigator.of(context).pop();
+            Navigator.pushNamed(context, '/login');
+          });
+        } catch (e) {
+          // Handle database error
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error saving data: $e')),
+          );
+        }
       }
     }
   }
-}
 
 @override
 Widget build(BuildContext context) {
@@ -272,17 +279,12 @@ Widget build(BuildContext context) {
                                 labelStyle: const TextStyle(
                                   fontSize: 12,
                                 ),
-                                suffixIcon: Icon(
-                                  Icons.visibility_off,
-                                  color: Colors.brown[800],
-                                  size: 20,
-                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 10),
                       RichText(
                         text: TextSpan(
                           text: 'Already have an account? Log in ',
