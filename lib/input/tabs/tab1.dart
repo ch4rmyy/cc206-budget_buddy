@@ -9,7 +9,7 @@ class Expenses extends StatelessWidget{
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.receipt_long, size: 29,),
+        Icon(Icons.receipt_long, size: 26,),
         Text("Expenses"),
       ],
     );

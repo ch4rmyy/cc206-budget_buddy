@@ -7,7 +7,6 @@ class Event {
 
   Event({required this.tid, required this.date, required this.description});
 
-  // Constructor to convert database row data to Event
   factory Event.fromMap(Map<String, dynamic> map) {
     return Event(
       tid: map['tid'],
@@ -34,7 +33,7 @@ class CalendarConnectors {
   Future<List<Event>> getEventsForDate(DateTime selectedDate) async {
     final DatabaseService _databaseService = DatabaseService.instance;
 
-    final formattedDate = selectedDate.toIso8601String().split('T')[0]; // Format to 'YYYY-MM-DD'
+    final formattedDate = selectedDate.toIso8601String().split('T')[0]; 
 
     final db = await _databaseService.database;
 

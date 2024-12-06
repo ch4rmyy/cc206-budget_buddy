@@ -6,7 +6,6 @@ import 'package:cc206_budget_buddy/drawers/ratings.dart';
 import 'package:cc206_budget_buddy/features/history.dart';
 import 'package:cc206_budget_buddy/features/sign_up_page.dart';
 import 'package:cc206_budget_buddy/features/homepage.dart';
-import 'package:cc206_budget_buddy/features/user_profile.dart';
 import 'package:cc206_budget_buddy/input/records.dart';
 import 'package:cc206_budget_buddy/navigation/main_navigation.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
@@ -54,7 +53,6 @@ class MyApp extends StatelessWidget {
         '/manageAcc': (BuildContext ctx) => ManageAccountPage(),
         '/aboutUs': (BuildContext ctx) => const AboutUsScreen(),
         '/ratings': (BuildContext ctx) => const RatingScreen(),
-        '/userprofile': (BuildContext ctx) => const UserProfilePage()
       },
     );
   }

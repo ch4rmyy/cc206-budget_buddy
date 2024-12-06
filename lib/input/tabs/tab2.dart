@@ -9,7 +9,7 @@ class Budget extends StatelessWidget{
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.wallet, size: 29,),
+        Icon(Icons.wallet, size: 26,),
         Text("Budget"),
       ],
     );

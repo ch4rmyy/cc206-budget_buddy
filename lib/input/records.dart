@@ -25,33 +25,27 @@ class _RecordsState extends State<Records> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Retrieve the username passed from the homepage
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final username = args['username'] as String; // Get the username
+    final username = args['username'] as String; 
 
-    // Fetch the userId based on the username
     _fetchUserIdByUsername(username);
   }
 
   int? _userId;
-  String? selectedCategory; // Default selected option
+  String? selectedCategory; 
   final TextEditingController _budgetController =
       TextEditingController(); //Amount part
   final TextEditingController _expenseController = TextEditingController();
 
-// Function to fetch userId by username
   Future<void> _fetchUserIdByUsername(String username) async {
     try {
-      // Fetch the user data based on username
       final user = await _databaseService.getUserIdByUsername(username);
       if (mounted) {
         if (user != null) {
           setState(() {
             _userId = user['id'];
           });
-          // Assuming 'id' is the userId field
-          // Now we have the userId, you can call addBudget function // Pass userId to addBudget
         } else {
           if(mounted){
           showPopUpDialog(context, 'Error', 'Username not found.');
@@ -82,9 +76,9 @@ class _RecordsState extends State<Records> {
       try {
         await _databaseService.addBudget(_userId!, bamount);
         final double totalBudget = await _databaseService.getTotalBudget(
-            _userId!); // Assuming this method gets the total budget for the user
+            _userId!);
         await _databaseService.updateTotalBudget(_userId!,
-            totalBudget); // Update the total budget in the budget table
+            totalBudget); 
 
         showPopUpDialog(context, 'Confirmation', 'Budget added successfully.');
         _budgetController.clear();
@@ -132,12 +126,12 @@ class _RecordsState extends State<Records> {
     }
 
     try {
-      // Call the database service to add the expense
+      // Call database service to add the expense
       await _databaseService.addExpense(_userId!, mount, selectedCategory!);
       final double totalExpense = await _databaseService.getTotalExpenses(
-          _userId!); // Assuming this method gets the total expense for the user
+          _userId!);
       await _databaseService.updateTotalExpense(
-          _userId!, totalExpense); // Update the total expense in the user table
+          _userId!, totalExpense); 
       await _databaseService.printAllExpenses();
 
       if(mounted){
@@ -189,16 +183,12 @@ class _RecordsState extends State<Records> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Color(0xFFFEFAE0)),
             onPressed: () {
-              // Get the callback from the arguments
               final callback = ModalRoute.of(context)?.settings.arguments
                   as Map<String, dynamic>?;
 
-              // If the callback exists, call the function
               if (callback != null && callback['onAddExpense'] != null) {
-                callback['onAddExpense'](); // Trigger the refresh
+                callback['onAddExpense'](); 
               }
-
-              // Pop the screen and go back to the previous page
               Navigator.pop(context);
             },
           ),
@@ -226,7 +216,6 @@ class _RecordsState extends State<Records> {
               )
           )
         ),
-        // drawer: const Maindrawer(),
         body: TabBarView(children: [
           SingleChildScrollView(
             child: Container(
@@ -247,26 +236,25 @@ class _RecordsState extends State<Records> {
                       child: Card(
                         shape: RoundedRectangleBorder(
                           borderRadius:
-                              BorderRadius.circular(20), // Rounded corners
+                              BorderRadius.circular(20), 
                         ),
-                        elevation: 3, // Shadow effect
+                        elevation: 3, 
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 12),
                           child: Row(
                             children: [
-                              // Leading Circle Icon
                               const CircleAvatar(
                                 radius: 20,
                                 backgroundColor: Color.fromRGBO(
-                                    96, 108, 56, 1), // Green background
+                                    96, 108, 56, 1), 
                                 child: Icon(
                                   Icons.category,
                                   color: Colors.white,
                                 ),
                               ),
                               const SizedBox(
-                                  width: 16), // Space between icon and text
+                                  width: 16), 
                               // Dropdown for Category
                               Expanded(
                                 child: DropdownButtonHideUnderline(
@@ -312,27 +300,25 @@ class _RecordsState extends State<Records> {
                       child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.circular(20), // Rounded corners
+                                BorderRadius.circular(20), 
                           ),
-                          elevation: 3, // Shadow effect
+                          elevation: 3, 
                           child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 12),
                               child: Row(children: [
-                                // Empty Space (leading)
                                 const SizedBox(width: 16),
-                                // Amount TextField
                                 Expanded(
                                     child: TextField(
                                   controller: _expenseController,
                                   keyboardType:
-                                      TextInputType.number, // Numeric input
+                                      TextInputType.number, 
                                   decoration: const InputDecoration(
                                     hintText: "Enter Amount",
                                     hintStyle: TextStyle(
-                                        color: Colors.grey), // Placeholder text
+                                        color: Colors.grey), 
                                     border: InputBorder
-                                        .none, // No border for the text field
+                                        .none, 
                                   ),
                                   style: const TextStyle(
                                     fontSize: 16,
@@ -346,15 +332,15 @@ class _RecordsState extends State<Records> {
                     ),
                     ElevatedButton(
                       onPressed:
-                          _submitDataExpense, // Trigger the function on button press
+                          _submitDataExpense, 
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
-                            const Color(0xFF283618), // Button color
+                            const Color(0xFF283618),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 50, vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
-                              20), // Rounded corners for the button
+                              20), 
                         ),
                       ),
                       child: const Text(
@@ -372,7 +358,7 @@ class _RecordsState extends State<Records> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    //const SizedBox(height: 20),
+                   
                     const Text(
                       "Amount",
                       textAlign: TextAlign.right,
@@ -386,27 +372,27 @@ class _RecordsState extends State<Records> {
                       child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.circular(20), // Rounded corners
+                                BorderRadius.circular(20), 
                           ),
-                          elevation: 3, // Shadow effect
+                          elevation: 3,
                           child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 12),
                               child: Row(children: [
-                                // Empty Space (leading)
+
                                 const SizedBox(width: 16),
                                 // Amount TextField
                                 Expanded(
                                     child: TextField(
                                   controller: _budgetController,
                                   keyboardType:
-                                      TextInputType.number, // Numeric input
+                                      TextInputType.number, 
                                   decoration: const InputDecoration(
                                     hintText: "Enter Amount",
                                     hintStyle: TextStyle(
-                                        color: Colors.grey), // Placeholder text
+                                        color: Colors.grey), 
                                     border: InputBorder
-                                        .none, // No border for the text field
+                                        .none, 
                                   ),
                                   style: const TextStyle(
                                     fontSize: 16,
@@ -422,7 +408,7 @@ class _RecordsState extends State<Records> {
                       onPressed: () async {
                         if (_budgetController.text.isNotEmpty) {
                           try {
-                            await _addBudget(); // Directly call _addBudget() since it now internally uses _userId
+                            await _addBudget(); 
                           } catch (e) {
                             if (mounted) {                             
                               showPopUpDialog(context, '!', 'Sorry, you cannot add budget.');
@@ -459,11 +445,3 @@ class _RecordsState extends State<Records> {
     );
   }
 }
-
-
-// /* SCSS RGB */
-// $cornsilk: rgba(254, 250, 224, 1) 0xFFFEFAE0;
-// $earth-yellow: rgba(221, 161, 94, 1);
-// $tigers-eye: rgba(188, 108, 37, 1);
-// $dark-moss-green: rgba(96, 108, 56, 1);
-// $pakistan-green: rgba(40, 54, 24, 1) 0xFF283618;

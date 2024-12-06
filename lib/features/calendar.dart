@@ -2,7 +2,7 @@ import 'package:cc206_budget_buddy/drawers/main_drawer.dart';
 import 'package:cc206_budget_buddy/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:cc206_budget_buddy/features/sample.dart';
+import 'package:cc206_budget_buddy/features/components.dart';
 
 class Calendar extends StatefulWidget { 
   final String email;
@@ -45,9 +45,6 @@ class _CalendarState extends State<Calendar> {
     try {
       if(!_eventsMap.containsKey(day)){
         final events = await _calendarConnectors.getEventsForDate(day);
-        for (var event in events) {
-          print('Fetched event: ${event.tid}, ${event.description}, ${event.date}'); //delete
-        }
         setState(() {_eventsMap[day] = events;});
       }
       _selectedEvents.value = List.from(_eventsMap[day]??[]); // Update list
@@ -127,7 +124,7 @@ class _CalendarState extends State<Calendar> {
             const SizedBox(height: 5,),
         
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround, //space sa buttons
+              mainAxisAlignment: MainAxisAlignment.spaceAround, 
               children: [
                 TextButton(
                   onPressed: (){
@@ -164,18 +161,11 @@ class _CalendarState extends State<Calendar> {
                   int tid = await DatabaseService.instance.addPlans(userId, eventController.text, _selectedDay!);
 
                   if(tid != -1){
-                    await _databaseService.printAllTasks();
                     final newPlan = Event(
                       tid: tid,
                       description: eventController.text,
                       date: _selectedDay!,
                     );
-                  
-                    // final newEvent = Event(
-                    // tid: DateTime.now().millisecondsSinceEpoch,
-                    // description: eventController.text,
-                    // date: _selectedDay!,
-                    // );
         
                     setState(() {
                       if(_eventsMap[_selectedDay] == null){
@@ -310,10 +300,9 @@ class _CalendarState extends State<Calendar> {
                           ),
                         );
                       }
-                      return const SizedBox.shrink(); //kuhaon ang marker if wala event
+                      return const SizedBox.shrink(); 
                     }
-                  ),
-     
+                  ),   
                   onDaySelected: _onDaySelected,
                   onFormatChanged: (format) {
                     if (_calendarFormat != format) {
@@ -396,9 +385,6 @@ class _CalendarState extends State<Calendar> {
 
                               try{
                                 await _databaseService.deletePlan(event.tid);
-                                await _databaseService.printAllTasks();
-                                // await _databaseService.deleteAllTasks();
-
                                 setState(() {
                                   _eventsMap[_selectedDay!]?.remove(event);
                                 });
@@ -448,12 +434,3 @@ class _CalendarState extends State<Calendar> {
     );
   }
 }
-
-// /* SCSS RGB */
-// $cornsilk: rgba(254, 250, 224, 1) 0xFFFEFAE0;
-
-// $earth-yellow: rgba(221, 161, 94, 1) 0xFFDDA15E;
-// $tigers-eye: rgba(188, 108, 37, 1) 0xFFDDA15E;
-
-// $dark-moss-green: rgba(96, 108, 56, 1) 0xFF606C38;
-// $pakistan-green: rgba(40, 54, 24, 1) 0xFF283618;

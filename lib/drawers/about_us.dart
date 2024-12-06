@@ -43,14 +43,12 @@ class AboutUsScreen extends StatelessWidget {
             const SizedBox(height: 40),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Image.asset(
-                'assets/images/icon.png',
+              child: Image.asset('assets/images/icon.png',
                 height: 150,
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'BudgetBuddy',
+            const Text('BudgetBuddy',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
@@ -58,8 +56,7 @@ class AboutUsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 5),
-            const Text(
-              'Version 1.1.3',
+            const Text('Version 1.1.3',
               style: TextStyle(
                 fontSize: 16,
                 color: Color.fromRGBO(188, 108, 37, 1),

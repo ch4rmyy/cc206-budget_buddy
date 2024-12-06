@@ -1,6 +1,4 @@
-//opening and interacting to the database
-
-import 'package:cc206_budget_buddy/features/sample.dart';
+import 'package:cc206_budget_buddy/features/components.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
@@ -20,20 +18,20 @@ class DatabaseService {
 
   final String _budgetTableName = "budget";
   final String _budgetIdColumnName = "bid";
-  final String _budgetUserIdColumnName = "user_id"; // Foreign key to user table
+  final String _budgetUserIdColumnName = "user_id"; 
   final String _budgetAmountColumnName = "bamount";
   final String _budgetDateColumnName = "bdate";
 
   final String _expenseTableName = "expense";
   final String _expenseIdColumnName = "eid";
-  final String _expenseUserIdColumnName = "user_id"; // Foreign key to user table
+  final String _expenseUserIdColumnName = "user_id"; 
   final String _expenseAmountColumnName = "amount";
   final String _expenseCategoryColumnName = "category";
   final String _expenseDateColumnName = "date";
 
   final String _tasksTableName = "tasks";
   final String _tasksIdColumnName = "tid";
-  final String _tasksUserIdColumnName = "user_id"; //Foreign Key
+  final String _tasksUserIdColumnName = "user_id"; 
   final String _tasksDescriptionColumnName = "description";
   final String _tasksDateColumnName = "tdate";
 
@@ -63,15 +61,13 @@ class DatabaseService {
 
   Future<Database> getDataBase() async {
 
-    // Get a location using getDatabasesPath
     final databaseDirPath = await getDatabasesPath();
     final databasePath = join(databaseDirPath, "master_db.db");
-    //open the database
     final database = await openDatabase(
   databasePath,
-  version: 4, // Increment the version to trigger onUpgrade
+  version: 4, 
   onCreate: (db, version) {
-    // Create all tables in the initial setup
+
     db.execute('''
     CREATE TABLE IF NOT EXISTS $_userTableName(
       $_userIdColumnName INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -153,23 +149,7 @@ Future<void> printAllExpenses() async {
   }
 }
 
-
-
-  
-
-
-
-
-
-
-
-
-
-
   Future<void> addUser(String email, String username, String password) async {
-
-    //to be delete
-    print('Inserting user: email=$email, username=$username, password=$password');
 
 
     final db = await database;
@@ -185,14 +165,14 @@ Future<void> printAllExpenses() async {
 
   //gina check kung may ara...para sa SIGNUP
   Future<bool> checkUserExists(String username, String email) async {
-  final db = await database; // Your SQLite database instance
+  final db = await database; 
   final result = await db.query(
-    _userTableName, // Replace with your table name
+    _userTableName, 
     where: 'username = ? OR email = ?',
     whereArgs: [username, email],
   );
 
-  return result.isNotEmpty; // Return true if a user exists, otherwise false
+  return result.isNotEmpty; 
 }
 
 //gina check kung may ara...para sa LOGIN
@@ -205,20 +185,19 @@ Future<Map<String, dynamic>?> getUserEmailAndPassword(String email, String passw
   );
 
   if (result.isNotEmpty) {
-    return result.first; // Return the first matching user
+    return result.first; 
   }
-  return null; // No match found
+  return null; 
 }
 
 
-// Add a method to insert an expense
 Future<void> addExpense(int userId, double amount, String category) async {
   final db = await database;
   print('Adding budget: userId=$userId, amount=$amount, category: $category');
   await db.insert(
     _expenseTableName,
     {
-      'user_id': userId, // Pass the correct user ID here
+      'user_id': userId, 
       'amount': amount,
       'category': category,
       'date': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
@@ -261,7 +240,7 @@ Future<void> addBudget(int userId,double bamount) async {
   await db.insert(
     _budgetTableName,
     {
-      'user_id': userId, // Pass the correct user ID here
+      'user_id': userId, 
       'bamount': bamount,
       'bdate': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
     },
@@ -316,15 +295,14 @@ Future<int?> getUserId(String username) async {
 Future<Map<String, dynamic>?> getUserIdByUsername(String username) async {
   final db = await database;
 
-  // Query the user table to find the user with the given username
   final List<Map<String, dynamic>> result = await db.query(
     _userTableName,
-    where: '$_userUsernameColumnName = ?', // Assuming your column name is '_userUsernameColumnName'
+    where: '$_userUsernameColumnName = ?', 
     whereArgs: [username],
   );
 
   if (result.isNotEmpty) {
-    return result.first; // Return the first result (there should be only one)
+    return result.first;
   }
   return null; // No user found
 }
@@ -332,7 +310,6 @@ Future<Map<String, dynamic>?> getUserIdByUsername(String username) async {
 Future<double> getTotalSpendingForCategory(int userId, String category) async {
   final db = await database;
 
-  // Query the total spending for the given category and user ID
   final result = await db.rawQuery('''
     SELECT SUM($_expenseAmountColumnName) AS total
     FROM $_expenseTableName
@@ -344,14 +321,13 @@ Future<double> getTotalSpendingForCategory(int userId, String category) async {
     return total != null ? double.parse(total.toString()) : 0.0;
   }
 
-  return 0.0; // Return 0 if no expenses found for that category
+  return 0.0; // Return 0 if no expenses found for specific category
 }
 
 
 Future<List<Map<String, dynamic>>> getTransactionHistory(int userId) async {
   final db = await database;
 
-  // Query to fetch transactions for the specific user
   final result = await db.rawQuery('''
 SELECT 
   'Expense' AS type, 
@@ -373,23 +349,23 @@ ORDER BY date DESC
   ''', [userId, userId]);
 
   print('Fetched transactions: $result');
-  return result; // Return the combined transaction history
+  return result; // Return combined transaction history
 }
 
 Future<int?> getUserIdFromEmailAndPassword(String email, String password) async {
   final db = await database; // Access the database
   final result = await db.query(
-    _userTableName, // Use your user table
-    columns: [_userIdColumnName], // Fetch only the ID column
-    where: '$_userEmailColumnName = ? AND $_userPassWordColumnName = ?', // Match email and password
-    whereArgs: [email, password], // Arguments for the placeholders
-    limit: 1, // Only fetch the first matching record
+    _userTableName, 
+    columns: [_userIdColumnName], 
+    where: '$_userEmailColumnName = ? AND $_userPassWordColumnName = ?', 
+    whereArgs: [email, password],
+    limit: 1, 
   );
 
   if (result.isNotEmpty) {
-    return result.first[_userIdColumnName] as int; // Return the ID if a match is found
+    return result.first[_userIdColumnName] as int; 
   }
-  return null; // Return null if no match is found
+  return null; 
 }
 
 Future<int> addPlans(int userId,String description, DateTime selectedDate) async {
@@ -436,41 +412,18 @@ Future<void> deletePlan(int tid) async {
     }
   }
 
-  //   Future<Map<DateTime, List<Event>>> getAllEvents() async {
-  //   final db = await database;
-  //   final List<Map<String, dynamic>> eventMaps = await db.query(_tasksTableName);
-
-  //   Map<DateTime, List<Event>> eventsMap = {};
-
-  //   for (var eventMap in eventMaps) {
-  //     DateTime eventDate = DateTime.parse(eventMap[_tasksDateColumnName]);
-  //     Event event = Event.fromMap(eventMap);
-
-  //     if (eventsMap.containsKey(eventDate)) {
-  //       eventsMap[eventDate]!.add(event);
-  //     } else {
-  //       eventsMap[eventDate] = [event];
-  //     }
-  //   }
-
-  //   return eventsMap;
-  // }
-
   Future<List<Event>> getEventsForDate(DateTime selectedDate) async {
-  final db = await database; // Get the database instance
+  final db = await database; 
 
-  // Format the date to match the 'tdate' column format (YYYY-MM-DD)
   final formattedDate = selectedDate.toIso8601String().split('T')[0];
 
   try {
-    // Query the database for tasks matching the formatted date
     final List<Map<String, dynamic>> result = await db.query(
       'tasks',
-      where: 'tdate = ?', // Exact match for the date
+      where: 'tdate = ?', // Exact match sa date
       whereArgs: [formattedDate],
     );
 
-    // Convert the result into a list of Event objects
     return result.map((task) => Event.fromMap(task)).toList();
   } catch (e) {
     print('Error fetching events for $formattedDate: $e');
@@ -485,7 +438,7 @@ Future<void> deletePlan(int tid) async {
   try {
     final result = await db.query(_tasksTableName);
 
-    // Convert the result into a list of Event objects
+    // Convert to list of Event objects
     List<Event> tasks = result.map((task) {
       return Event.fromMap(task);
     }).toList();
@@ -496,37 +449,6 @@ Future<void> deletePlan(int tid) async {
     return [];
   }
 }
-
-
-  Future<void> printAllTasks() async {
-  final db = await database;
-
-  try {
-    // Query all rows in the tasks table
-    List<Map<String, dynamic>> tasks = await db.query(_tasksTableName);
-
-    // Print each task to the debug console
-    for (var task in tasks) {
-      print('Task ID: ${task[_tasksIdColumnName]}, Description: ${task[_tasksDescriptionColumnName]}, Date: ${task[_tasksDateColumnName]}');
-    }
-  } catch (e) {
-    print('Error retrieving tasks: $e');
-  }
-}
-
-Future<void> deleteAllTasks() async {
-  final db = await database;
-
-  try {
-    // Delete all tasks from the tasks table
-    await db.delete(_tasksTableName);
-
-    print('All tasks deleted successfully.');
-  } catch (e) {
-    print('Error deleting all tasks: $e');
-  }
-}
-
 
 
 }

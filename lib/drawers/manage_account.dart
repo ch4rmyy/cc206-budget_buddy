@@ -5,7 +5,7 @@ class ManageAccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(96, 108, 56, 1), // Dark green
+        backgroundColor: const Color.fromRGBO(96, 108, 56, 1), 
         toolbarHeight: 80,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFFFEFAE0)),
@@ -34,32 +34,10 @@ class ManageAccountPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: SizedBox(
-                width: 350, // Match width of ProfileEditorScreen card
+                width: 350, 
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const SizedBox(height: 5),
-                    _buildClickableOption(
-                      context,
-                      Icons.lock,
-                      'Change Password',
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChangePasswordPage()),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    _buildClickableOption(
-                      context,
-                      Icons.email,
-                      'Change Email',
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChangeEmailPage()),
-                      ),
-                    ),
                     const SizedBox(height: 20),
                     _buildClickableOption(
                       context,
@@ -113,70 +91,60 @@ class ManageAccountPage extends StatelessWidget {
     );
   }
 
-  void _handleLogout(BuildContext context) {
+void _handleLogout(BuildContext context) {
     // Show confirmation dialog
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Log Out', style: TextStyle(fontWeight: FontWeight.bold),),
-        content: const Text('Are you sure you want to log out?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+        title: Image.asset('assets/images/pig6.png', width: 150,),
+        content: const Text(
+          'Are you sure you want to log out?', 
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16),
           ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Perform logout logic here
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Logged out successfully!')),
-              );
-            },
-            child: const Text('Log Out'),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+              ),
+
+              TextButton(
+                onPressed: () {
+                Navigator.pushNamed(context, '/login');
+                // Perform logout logic here
+                showPopUpDialog(context, 'Successfully', 'Loged out');
+                },
+                child: const Text('Log out', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+              ),
+            ],
           ),
         ],
-      ),
+      )
     );
   }
+    void showPopUpDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, //prevent closing when user tap outside
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          title: Center(child: Text(title, style: const TextStyle(fontWeight: FontWeight.w600),)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text(message, style: const TextStyle(fontSize: 20),)],
+          ),
+      ));
+      
+    Future.delayed(const Duration(seconds: 2)).then((_){
+        if(Navigator.canPop(context)){
+          Navigator.of(context).pop();
+        }
+    });
+  }
+
 }
 
-class ChangePasswordPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Change Password'),
-        backgroundColor: const Color.fromRGBO(96, 108, 56, 1),
-        foregroundColor: Color(0xFFFEFAE0),
-        toolbarHeight: 70,
-      ),
-      body: const Center(
-        child: Text(
-          'Change Password Screen',
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
-    );
-  }
-}
-
-class ChangeEmailPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Change Email'),
-        backgroundColor: const Color.fromRGBO(96, 108, 56, 1),
-        foregroundColor: Color(0xFFFEFAE0),
-        toolbarHeight: 70,
-      ),
-      body: const Center(
-        child: Text(
-          'Change Email Screen',
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
-    );
-  }
-}

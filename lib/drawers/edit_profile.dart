@@ -35,13 +35,12 @@ class ProfileEditorScreenState extends State<ProfileEditorScreen> {
             } 
 
           ),
-          // Matches the dark green theme
       ),
       body: Container(
         color: const Color(0xFFFEFAE0),
         child: Center(
           child: Card(
-            color: const Color(0xFFFEFAE0), // Main card background color
+            color: const Color(0xFFFEFAE0), 
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -217,20 +216,18 @@ class ProfileEditorScreenState extends State<ProfileEditorScreen> {
                         const SizedBox(height: 20),
                         // Save Button
                         SizedBox(
-                          width: double.infinity, // Full-width button
+                          width: double.infinity, 
                           child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                // Save data logic
                                 print('Name: ${_nameController.text}');
                                 print('Email: ${_emailController.text}');
-                                // ... handle other fields
                               }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  const Color.fromRGBO(227, 135, 55, 1), // Light button color
-                              foregroundColor: const Color(0xFFFEFAE0), // Text color
+                                  const Color.fromRGBO(227, 135, 55, 1), 
+                              foregroundColor: const Color(0xFFFEFAE0), 
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),

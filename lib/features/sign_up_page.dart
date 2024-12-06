@@ -92,9 +92,6 @@ class _SignUpPageState extends State<SignUpPage> {
           _emailController.clear();
           _passwordController.clear();
     
-          //print sa console
-          await _databaseService.printAllUsers();
-    
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -131,14 +128,12 @@ class _SignUpPageState extends State<SignUpPage> {
             },
           );
     
-          // Navigate to the Login after delay
           Future.delayed(const Duration(seconds: 2), () {
             if (!mounted) return;
             Navigator.of(context).pop();
             Navigator.pushNamed(context, '/login');
           });
         } catch (e) {
-          // Handle database error
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error saving data: $e')),
           );
@@ -151,9 +146,9 @@ class _SignUpPageState extends State<SignUpPage> {
 Widget build(BuildContext context) {
   return Scaffold(
     body: SafeArea(
-      child: SingleChildScrollView( // This makes the screen scrollable when the keyboard is visible
+      child: SingleChildScrollView( // screen scrollable when the keyboard is visible
         child: Padding(
-           padding: const EdgeInsets.all(16.0),  // Add some padding for better spacing
+           padding: const EdgeInsets.all(16.0), 
           child: Form(
             key: _fKey,
             child: Column(

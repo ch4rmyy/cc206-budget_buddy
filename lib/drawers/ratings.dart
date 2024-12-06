@@ -20,13 +20,7 @@ class _RatingScreenState extends State<RatingScreen> {
       Navigator.pop(context); 
     });
   }
-
-// /* SCSS RGB */
-// $cornsilk: rgba(254, 250, 224, 1) 0xFFFEFAE0;
-// $earth-yellow: rgba(221, 161, 94, 1);
-// $tigers-eye: rgba(188, 108, 37, 1);
-// $dark-moss-green: rgba(96, 108, 56, 1);
-// $pakistan-green: rgba(40, 54, 24, 1) 0xFF283618;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

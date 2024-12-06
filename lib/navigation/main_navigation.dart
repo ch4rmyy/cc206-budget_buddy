@@ -12,14 +12,13 @@ class MainNavigator extends StatefulWidget {
 }
 
 class _MainNavigatorState extends State<MainNavigator> {
-  int currentpage = 0; // Tracks the currently selected page
+  int currentpage = 0; 
   late String email;
   late String password;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Extract the arguments passed from the login screen
     final args = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
     email = args['email']!;
     password = args['password']!;
@@ -27,11 +26,10 @@ class _MainNavigatorState extends State<MainNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    // Define the list of pages, passing the email and password to the necessary pages
     final List<Widget> pages = [
-      Homepage(email: email, password: password), // Pass arguments to homepage
-      Calendar(email: email, password: password), // No arguments needed for the calendar
-      History(email: email, password: password), // Pass to history
+      Homepage(email: email, password: password), 
+      Calendar(email: email, password: password), 
+      History(email: email, password: password), 
     ];
 
 

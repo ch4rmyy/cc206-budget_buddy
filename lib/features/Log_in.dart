@@ -122,13 +122,10 @@ class _LogInPageState extends State<LogInPage> {
       },
     );
 
-    // Delay for 2 seconds, then close dialog and navigate
-    // Delay for 2 seconds before navigating
     await Future.delayed(const Duration(seconds: 2));
 
-    // Ensure the widget is still mounted before proceeding
     if (mounted) {
-      Navigator.of(context).pop(); // Close the dialog      
+      Navigator.of(context).pop();     
     }
   }
 
@@ -138,7 +135,7 @@ class _LogInPageState extends State<LogInPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0), // Add some padding for better spacing
+            padding: const EdgeInsets.all(16.0), 
             child: Form(
               key: _fKey,
               child: Column(
@@ -284,10 +281,3 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 }
-
-// /* SCSS RGB */
-// $cornsilk: rgba(254, 250, 224, 1) 0xFFFEFAE0;
-// $earth-yellow: rgba(221, 161, 94, 1);
-// $tigers-eye: rgba(188, 108, 37, 1);
-// $dark-moss-green: rgba(96, 108, 56, 1) 0xFF606C38;
-// $pakistan-green: rgba(40, 54, 24, 1) 0xFF283618;
